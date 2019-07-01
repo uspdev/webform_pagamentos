@@ -1,0 +1,14 @@
+{
+    "name": "uspdev/webform_boleto_usp",
+    "description": "Gera boletos usando api USP",
+    "type": "drupal-module",
+    "require": {
+        "uspdev/boleto": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Thiago Gomes Verissimo",
+            "email": "verissimotgv@gmail.com"
+        }
+    ]
+}
