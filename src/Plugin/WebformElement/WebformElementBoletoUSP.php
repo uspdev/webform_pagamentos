@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\WebformBoletoUsp\Plugin\WebformElement;
+namespace Drupal\webform_boleto_usp\Plugin\WebformElement;
 
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\Core\Form\FormStateInterface;
