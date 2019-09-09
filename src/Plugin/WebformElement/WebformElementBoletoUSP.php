@@ -5,6 +5,7 @@ namespace Drupal\webform_boleto_usp\Plugin\WebformElement;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform_boleto_usp\Gera;
 
 /**
  * Provides a 'boletoUSP' element.
@@ -26,13 +27,12 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function getDefaultProperties() {
     return [
-      'boletousp_type' => 'default',
-      'boletousp_admin_mode' => FALSE,
-      'boletousp_title' => '',
-      'boletousp_description' => '',
       // Flexbox.
       'flex' => 1,
-      // Conditional logic.
+      # Campos do boleto
+      'boletousp_informacoesboletosacado' => 'Nome do evento, curso etc',
+      'boletousp_datavencimentoboleto' =>'', 
+      'boletousp_valor' => '10,00',
     ];
   }
 
@@ -69,7 +69,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
-    $element['#after_build'][] = [get_class($this), 'afterBuildBoletoUSP'];
   }
 
   /**
@@ -86,16 +85,10 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
-    /*
-    $key = $element['#webform_key'];
+    
     $data = $webform_submission->getData();
-    unset($data[$key]);
-    $sub_keys = ['sid', 'token', 'response'];
-    foreach ($sub_keys as $sub_key) {
-      unset($data[$key . '_' . $sub_key]);
-    }
+    $data['codigo_boleto_gerado'] = Gera::gera($data, $element);
     $webform_submission->setData($data);
-    */
   }
 
   /**
@@ -108,57 +101,31 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     $form['boletousp'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('BoletoUSP settings'),
+      '#title' => $this->t('Configurações do BoletoUSP'),
     ];
-    $form['boletousp']['boletousp_type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Challenge type'),
-      '#required' => TRUE,
-      '#options' => $boletousp_types,
-    ];
-    // Custom title and description.
+
     $form['boletousp']['boletousp_container'] = [
       '#type' => 'container',
-      '#states' => [
-        'invisible' => [[':input[name="properties[boletousp_type]"]' => ['value' => 'recaptcha/reCAPTCHA']]],
-      ],
     ];
-    $form['boletousp']['boletousp_container']['boletousp_title'] = [
+    $form['boletousp']['boletousp_container']['boletousp_informacoesboletosacado'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Question title'),
+      '#attributes'  => ['size' => 125],
+      '#title' => $this->t('Informações boleto sacado'),
     ];
-    $form['boletousp']['boletousp_container']['boletousp_description'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Question description'),
+
+    $form['boletousp']['boletousp_container']['boletousp_valor'] = [
+      '#type'        => 'number',
+      '#title'       => $this->t('Valor'),
+      '#prefix'      => 'R$',
+      '#required'    => TRUE,
     ];
-    // Admin mode.
-    $form['boletousp']['boletousp_admin_mode'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Admin mode'),
-      '#description' => $this->t('Bla'),
-      '#return_value' => TRUE,
+
+    $form['boletousp']['boletousp_container']['boletousp_datavencimentoboleto'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Data de vencimento do boleto'),
     ];
+
     return $form;
   }
-
-  /**
-   * After build handler for CAPTCHA elements.
-   */
-  public static function afterBuildBoletoUSP(array $element, FormStateInterface $form_state) {
-    // Make sure that the CAPTCHA response supports #title.
-
-    if (isset($element['boletousp_widgets'])
-      && isset($element['boletousp_widgets']['boletousp_response'])
-      && isset($element['boletousp_widgets']['boletousp_response']['#title'])) {
-      if (!empty($element['#boletousp_title'])) {
-        $element['boletousp_widgets']['boletousp_response']['#title'] = $element['#boletousp_title'];
-      }
-      if (!empty($element['#boletousp_description'])) {
-        $element['boletousp_widgets']['boletousp_response']['#description'] = $element['#boletousp_description'];
-      }
-    }
-    return $element;
-  }
-
 
 }
