@@ -4,7 +4,7 @@ namespace Drupal\webform_boleto_usp;
 
 class Gera {
 
-    public static function gera(){
+    public static function gera($data, $element){
         // $element['#boletousp_valor'];
         die("Cheguei");
     }
