@@ -19,7 +19,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   states_wrapper = TRUE,
  * )
  */
-class ElementBoletoUSP extends WebformElementBase {
+class WebformElementBoletoUSP extends WebformElementBase {
 
   /**
    * {@inheritdoc}
