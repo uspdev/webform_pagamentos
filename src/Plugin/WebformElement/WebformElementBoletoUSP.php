@@ -69,6 +69,11 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
+
+    /*fields*/
+    $webform = $webform_submission->getWebform();
+     $elements = $webform->getElementsDecodedAndFlattened();
+    print_r($elements);die();
   }
 
   /**
@@ -126,6 +131,19 @@ class WebformElementBoletoUSP extends WebformElementBase {
     ];
 
     return $form;
+  }
+
+  public function a(WebformSubmissionInterface $webform_submission) {
+
+    $webform = $webform_submission->getWebform();
+    $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
+    foreach ($elements as $key => $element) {
+      $fields[$key] = $this->t("@title (%type)", [
+          '@title' => ($element['#admin_title'] ?: $element['#title'] ?: $key),
+          '%type' => (isset($element['#type']) ? $element['#type'] : ''),
+        ]);
+    }
+    print_r($fields);die();
   }
 
 }
