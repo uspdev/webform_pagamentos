@@ -22,6 +22,8 @@ use Drupal\webform_boleto_usp\Gera;
  */
 class WebformElementBoletoUSP extends WebformElementBase {
 
+  private $elements = [];
+
   /**
    * {@inheritdoc}
    */
@@ -33,6 +35,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_informacoesboletosacado' => 'Nome do evento, curso etc',
       'boletousp_datavencimentoboleto' =>'', 
       'boletousp_valor' => '10,00',
+      'cpf' => '',
     ];
   }
 
@@ -70,10 +73,12 @@ class WebformElementBoletoUSP extends WebformElementBase {
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
-    /*fields*/
-    $webform = $webform_submission->getWebform();
-     $elements = $webform->getElementsDecodedAndFlattened();
-    print_r($elements);die();
+    /* Elements para mapeamento CPF e email */
+    //
+    $elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
+    foreach($elements as $key=>$element){
+        $this->$elements[$key] = $element['#title'];
+    }
   }
 
   /**
@@ -130,20 +135,13 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#title' => $this->t('Data de vencimento do boleto'),
     ];
 
+    $form['boletousp']['boletousp_container']['cpf'] = [
+      '#type'        => 'select',
+      '#title'       => $this->t('Cpf'),
+      '#options' => $this->$elements,
+    ];
+
     return $form;
-  }
-
-  public function a(WebformSubmissionInterface $webform_submission) {
-
-    $webform = $webform_submission->getWebform();
-    $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
-    foreach ($elements as $key => $element) {
-      $fields[$key] = $this->t("@title (%type)", [
-          '@title' => ($element['#admin_title'] ?: $element['#title'] ?: $key),
-          '%type' => (isset($element['#type']) ? $element['#type'] : ''),
-        ]);
-    }
-    print_r($fields);die();
   }
 
 }
