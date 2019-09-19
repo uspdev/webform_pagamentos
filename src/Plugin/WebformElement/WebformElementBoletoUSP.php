@@ -79,6 +79,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
     foreach($elements as $key=>$element){
         $this->$elements[$key] = $element['#title'];
     }
+    //echo "<pre>"; print_r(parent::getCompositeElements());die();
   }
 
   /**
@@ -105,6 +106,10 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    die();
+    // public function getElementStateOptions() {
+    // $this->getCompositeElements();
+
     $form = parent::form($form, $form_state);
 
     $boletousp_types = ['default' => $this->t('Default challenge type')];
@@ -134,13 +139,13 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#type' => 'date',
       '#title' => $this->t('Data de vencimento do boleto'),
     ];
-
+/*
     $form['boletousp']['boletousp_container']['cpf'] = [
       '#type'        => 'select',
       '#title'       => $this->t('Cpf'),
       '#options' => $this->$elements,
     ];
-
+*/
     return $form;
   }
 
