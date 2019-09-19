@@ -22,6 +22,8 @@ use Drupal\webform_boleto_usp\Gera;
  */
 class WebformElementBoletoUSP extends WebformElementBase {
 
+  private $elements = [];
+
   /**
    * {@inheritdoc}
    */
@@ -33,6 +35,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_informacoesboletosacado' => 'Nome do evento, curso etc',
       'boletousp_datavencimentoboleto' =>'', 
       'boletousp_valor' => '10,00',
+      'cpf' => '',
     ];
   }
 
@@ -69,6 +72,14 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
+
+    /* Elements para mapeamento CPF e email */
+    //
+    $elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
+    foreach($elements as $key=>$element){
+        $this->$elements[$key] = $element['#title'];
+    }
+    //echo "<pre>"; print_r(parent::getCompositeElements());die();
   }
 
   /**
@@ -95,6 +106,10 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    die();
+    // public function getElementStateOptions() {
+    // $this->getCompositeElements();
+
     $form = parent::form($form, $form_state);
 
     $boletousp_types = ['default' => $this->t('Default challenge type')];
@@ -124,7 +139,13 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#type' => 'date',
       '#title' => $this->t('Data de vencimento do boleto'),
     ];
-
+/*
+    $form['boletousp']['boletousp_container']['cpf'] = [
+      '#type'        => 'select',
+      '#title'       => $this->t('Cpf'),
+      '#options' => $this->$elements,
+    ];
+*/
     return $form;
   }
 
