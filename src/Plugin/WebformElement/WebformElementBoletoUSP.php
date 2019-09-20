@@ -22,8 +22,6 @@ use Drupal\webform_boleto_usp\Gera;
  */
 class WebformElementBoletoUSP extends WebformElementBase {
 
-  private $elements = [];
-
   /**
    * {@inheritdoc}
    */
@@ -32,10 +30,19 @@ class WebformElementBoletoUSP extends WebformElementBase {
       // Flexbox.
       'flex' => 1,
       # Campos do boleto
-      'boletousp_informacoesboletosacado' => 'Nome do evento, curso etc',
-      'boletousp_datavencimentoboleto' =>'', 
-      'boletousp_valor' => '10',
-      'boletousp_cpf' => '',
+      'boletousp_codigoUnidadeDespesa' => '8',
+      'boletousp_nomeFonte' => '',
+      'boletousp_nomeSubfonte' => '',
+      'boletousp_estruturaHierarquica' => '\FFLCH',
+      'boletousp_dataVencimentoBoleto' =>'', 
+      'boletousp_valorDesconto' =>'0', // Não exposto ao usuário
+      'boletousp_tipoSacado' =>'PF', // Não exposto ao usuário
+      'boletousp_informacoesBoletoSacado' => 'Nome do evento, curso, palestra ...',
+      'boletousp_instrucoesObjetoCobranca' => 'Não receber após o vencimento.',
+      'boletousp_codigoEmail' => '',
+      'boletousp_nomeSacado' => '',
+      'boletousp_cpfCnpj' => '',
+      'boletousp_valorDocumento' => '',
     ];
   }
 
@@ -74,10 +81,16 @@ class WebformElementBoletoUSP extends WebformElementBase {
     parent::prepare($element, $webform_submission);
 
     /* Elements para mapeamento CPF e email */
-    $elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
-    foreach($elements as $key=>$element){
-        $this->$elements[$key] = $element['#title'];
+    $elements = [];
+    $obj_elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
+    foreach($obj_elements as $key=>$element){
+        $elements[$key] = $element['#title'];
     }
+    /** Aqui vamos verificar se os campos chave informados 
+     *  pelo administrador(a) do formulário existe antes de mostrar o
+     *  formulário para preenchimento. Senão existir, mostrar um erro e
+     *  não deixar o mesmo ser submetido.
+     **/
     
   }
 
@@ -118,22 +131,55 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#type' => 'container',
     ];
 
-    $form['boletousp']['boletousp_container']['boletousp_informacoesboletosacado'] = [
+    $form['boletousp']['boletousp_container']['boletousp_codigoUnidadeDespesa'] = [
+      '#type' => 'integer',
+      '#title' => $this->t('Unidade de despesa'),
+    ];
+
+    $form['boletousp']['boletousp_container']['boletousp_nomeFonte'] = [
+      '#type'        => 'select',
+      '#title'       => $this->t('Fonte'),
+      '#options'    => [
+         'Taxas' => 'Taxas',
+       ],
+    ];
+
+    $form['boletousp']['boletousp_container']['boletousp_nomeSubfonte'] = [
+      '#type'        => 'select',
+      '#title'       => $this->t('SubFonte'),
+      '#options'    => [
+         'Congressos/Seminários/Palestras/Simpósios' => 'Congressos/Seminários/Palestras/Simpósios',
+       ],
+    ];
+
+    $form['boletousp']['boletousp_container']['boletousp_estruturaHierarquica'] = [
+      '#type' => 'textfield',
+      '#attributes'  => ['size' => 125],
+      '#title' => $this->t('Centro Gerencial'),
+    ];
+
+    $form['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Data de vencimento do boleto'),
+    ];
+
+    $form['boletousp']['boletousp_container']['boletousp_informacoesBoletoSacado'] = [
       '#type' => 'textfield',
       '#attributes'  => ['size' => 125],
       '#title' => $this->t('Informações boleto sacado'),
     ];
 
-    $form['boletousp']['boletousp_container']['boletousp_valor'] = [
-      '#type'        => 'number',
-      '#title'       => $this->t('Valor'),
-      '#prefix'      => 'R$',
-      '#required'    => TRUE,
+    $form['boletousp']['boletousp_container']['boletousp_instrucoesObjetoCobranca'] = [
+      '#type' => 'textfield',
+      '#attributes'  => ['size' => 125],
+      '#title' => $this->t('Instruçoes do objeto de cobrança'),
     ];
 
-    $form['boletousp']['boletousp_container']['boletousp_datavencimentoboleto'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Data de vencimento do boleto'),
+    $form['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [
+      '#type'        => 'number',
+      '#title'       => $this->t('Valor'),
+//      '#prefix'      => 'R$',
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento'] = [
@@ -142,11 +188,25 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#title' => $this->t('Mapeamento com campos do formulário'),
     ];
 
-    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cpf'] = [
+    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_codigoEmail'] = [
       '#type' => 'textfield',
-      '#description' => $this->t("sss"),
-      '#attributes'  => ['size' => 20],
-      '#title' => $this->t('CPF'),
+      '#description' => $this->t("Chave para campo de email"),
+      '#attributes'  => ['size' => 25],
+      '#title' => $this->t('Chave para campo de email'),
+    ];
+
+    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_nomeSacado'] = [
+      '#type' => 'textfield',
+      '#description' => $this->t("Chave para campo nome do sacado"),
+      '#attributes'  => ['size' => 25],
+      '#title' => $this->t('Chave para campo nome do sacado'),
+    ];
+
+    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cpfCnpj'] = [
+      '#type' => 'textfield',
+      '#description' => $this->t("Chave para campo cpf"),
+      '#attributes'  => ['size' => 25],
+      '#title' => $this->t('Chave para campo cpf'),
     ];
 
     return $form;
