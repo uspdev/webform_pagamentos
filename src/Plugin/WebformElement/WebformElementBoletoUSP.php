@@ -34,7 +34,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_nomeFonte' => '',
       'boletousp_nomeSubfonte' => '',
       'boletousp_estruturaHierarquica' => '\FFLCH',
-      'boletousp_dataVencimentoBoleto' =>'', 
+      'boletousp_dataVencimentoBoleto' =>'',
       'boletousp_valorDesconto' =>'0', // Não exposto ao usuário
       'boletousp_tipoSacado' =>'PF', // Não exposto ao usuário
       'boletousp_informacoesBoletoSacado' => 'Nome do evento, curso, palestra ...',
@@ -86,12 +86,12 @@ class WebformElementBoletoUSP extends WebformElementBase {
     foreach($obj_elements as $key=>$element){
         $elements[$key] = $element['#title'];
     }
-    /** Aqui vamos verificar se os campos chave informados 
+    /** Aqui vamos verificar se os campos chave informados
      *  pelo administrador(a) do formulário existe antes de mostrar o
      *  formulário para preenchimento. Senão existir, mostrar um erro e
      *  não deixar o mesmo ser submetido.
      **/
-    
+
   }
 
   /**
@@ -108,7 +108,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
-    
+
     $data = $webform_submission->getData();
     $data['codigo_boleto_gerado'] = Gera::gera($data, $element);
     $webform_submission->setData($data);
@@ -149,6 +149,8 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#title'       => $this->t('SubFonte'),
       '#options'    => [
          'Congressos/Seminários/Palestras/Simpósios' => 'Congressos/Seminários/Palestras/Simpósios',
+         'Cursos' => 'Cursos',
+         'Inscrição de Cursos' => 'Inscrição de Cursos',
        ],
     ];
 
@@ -193,6 +195,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo de email"),
       '#attributes'  => ['size' => 25],
       '#title' => $this->t('Chave para campo de email'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_nomeSacado'] = [
@@ -200,6 +203,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo nome do sacado"),
       '#attributes'  => ['size' => 25],
       '#title' => $this->t('Chave para campo nome do sacado'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cpfCnpj'] = [
