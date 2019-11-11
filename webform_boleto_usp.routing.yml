@@ -1,5 +1,5 @@
-webform_boleto_usp.admin_settings:
-  path: '/admin/config/webform_boleto_usp'
+webform_boleto_usp.settings:
+  path: '/admin/config/boleto-usp'
   defaults:
     _form: '\Drupal\webform_boleto_usp\Form\WebformBoletoUspForm'
     _title: 'Boleto USP'

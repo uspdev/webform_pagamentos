@@ -14,7 +14,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'your_module_admin_settings';
+    return 'webform_boleto_usp_settings';
   }
 
   /**
@@ -22,7 +22,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'your_module.settings',
+      'webform_boleto_usp.settings',
     ];
   }
 
@@ -30,11 +30,16 @@ class WebformBoletoUspForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('your_module.settings');
-    $form['your_message'] = [
+    $config = $this->config('webform_boleto_usp.settings');
+    $form['user_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Your message'),
-      '#default_value' => $config->get('your_message'),
+      '#title' => $this->t('Usuário. Exemplo: fflch'),
+      '#default_value' => $config->get('user_id'),
+    ];
+    $form['token'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Token'),
+      '#default_value' => $config->get('user_id'),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -44,8 +49,9 @@ class WebformBoletoUspForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
-    $this->config('your_module.settings')
-      ->set('variable_name', $values)
+    $this->config('webform_boleto_usp.settings')
+      ->set('user_id', $values['user_id'])
+      ->set('token', $values['token'])
       ->save();
     parent::submitForm($form, $form_state);
   }
