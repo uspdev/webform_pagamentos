@@ -3,7 +3,7 @@
     "description": "Gera boletos usando api USP",
     "type": "drupal-module",
     "require": {
-        "uspdev/boleto": "^1.0"
+        "uspdev/boleto": "dev-master"
     },
     "authors": [
         {
