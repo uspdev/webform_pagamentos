@@ -39,9 +39,9 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_tipoSacado' =>'PF', // Não exposto ao usuário
       'boletousp_informacoesBoletoSacado' => 'Nome do evento, curso, palestra ...',
       'boletousp_instrucoesObjetoCobranca' => 'Não receber após o vencimento.',
-      'boletousp_codigoEmail' => '',
-      'boletousp_nomeSacado' => ''  ,
-      'boletousp_cpfCnpj' => '',
+      'boletousp_codigoEmail' => 'email',
+      'boletousp_nomeSacado' => 'nome'  ,
+      'boletousp_cpfCnpj' => 'cpf',
       'boletousp_valorDocumento' => '',
     ];
   }
@@ -86,6 +86,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
     foreach($obj_elements as $key=>$element){
         $elements[$key] = $element['#title'];
     }
+
     /** Aqui vamos verificar se os campos chave informados
      *  pelo administrador(a) do formulário existe antes de mostrar o
      *  formulário para preenchimento. Senão existir, mostrar um erro e
@@ -109,7 +110,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
     $data = $webform_submission->getData();
-    $data['codigo_boleto_gerado'] = Gera::gera($data, $element);
+    $data['id_boleto'] = Gera::gera($data, $element);
     $webform_submission->setData($data);
   }
 
@@ -178,6 +179,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     $form['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [
       '#type'        => 'number',
+      '#description' => $this->t("Valor do boleto, exemplo: 10,50"),
       '#title'       => $this->t('Valor'),
 //      '#prefix'      => 'R$',
       '#required'    => TRUE,
@@ -185,7 +187,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     $form['boletousp']['boletousp_container']['mapeamento'] = [
       '#type' => 'fieldset',
-      '#description' => $this->t("sss"),
+      '#description' => $this->t(""),
       '#title' => $this->t('Mapeamento com campos do formulário'),
     ];
 

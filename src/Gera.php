@@ -7,128 +7,31 @@ class Gera {
 
     public static function gera($data, $element){
 
-        $boleto = new Boleto('fflch',''); 
+        /* Ricardo: Criar uma tela de configuração para salvar user/token
+          Exemplo: https://github.com/uspdev/senhaunicausp-drupal/blob/8.x-1.x/src/Form/SenhaunicauspForm.php */
+        $boleto = new Boleto('fflch','abc'); 
 
-    //array com campos mínimos para geração do boleto
-    $data = array(
-        'codigoUnidadeDespesa' => 8,
-        'nomeFonte' => 'Taxas', 
-        'nomeSubfonte' => utf8_decode('Congressos/Seminários/Palestras/Simpósios') , 
-        'estruturaHierarquica' => '\FFLCH\SCINFOR',   
-        'codigoConvenio' => 0 ,  
-        'dataVencimentoBoleto' => '12/12/2019', 
-        'valorDocumento' => 1.5, 
-        'valorDesconto' => 0, 
-        'tipoSacado' => 'PF', 
-        'cpfCnpj' => '33838180801', 
-        'nomeSacado' => 'Fulano',
-        'codigoEmail' => 'thiago.verissimo@usp.br',  
-        'informacoesBoletoSacado' => utf8_decode('Qualquer informações que queira colocar'),
-        'instrucoesObjetoCobranca' => utf8_decode('Não receber após vencimento!')
-    );
+        /* Augusto: fazer o bind de element/data para gerar o form */
+        $data = array(
+            'codigoUnidadeDespesa' => 8,
+            'nomeFonte' => 'Taxas', 
+            'nomeSubfonte' => utf8_decode('Congressos/Seminários/Palestras/Simpósios') , 
+            'estruturaHierarquica' => '\FFLCH\SCINFOR',   
+            'codigoConvenio' => 0 ,  
+            'dataVencimentoBoleto' => '12/12/2019', 
+            'valorDocumento' => 1.5,
+            'valorDesconto' => 0, 
+            'tipoSacado' => 'PF', 
+            'cpfCnpj' => '33838180801', 
+            'nomeSacado' => $data[$element->boletousp_nomeSacado],
+            'codigoEmail' => 'thiago.verissimo@usp.br',  
+            'informacoesBoletoSacado' => utf8_decode('Qualquer informações que queira colocar'),
+            'instrucoesObjetoCobranca' => utf8_decode('Não receber após vencimento!')
+        );
 
-    $id = $boleto->gerar($data);
-    die($id);
-
-
-
-        // $element['#boletousp_valor'];
-        //echo "<pre>"; var_dump($data); var_dump($element); die("Cheguei");
+        return $boleto->gerar($data);
+        /* Thiago: Dado um id, mostrar o pdf do boleto */
+        /* Nos resultados, exportar a situação: pago, cancelado, vencido etc*/
     }
-
 }
-
-/*
-
-    function dados_boleto($mapping, $submission,$nid){
-      $dados = array();
-      foreach($mapping as $k => $valor) {
-        if($k === 'codigoUnidadeDespesa') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'nomeFonte') {
-          $dados[$k] = utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-        else if($k === 'nomeSubfonte') {
-          $dados[$k] =  utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-        else if($k === 'estruturaHierarquica') {
-          $dados[$k] = utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-        else if($k === 'codigoConvenio') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'dataVencimentoBoleto') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'valorDocumento') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'valorDesconto') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'tipoSacado') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'cpfCnpj') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'nomeSacado') {
-          $dados[$k] =  utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-        else if($k === 'codigoEmail') {
-          $dados[$k] = $submission->data[$mapping[$k]][0];
-        }
-        else if($k === 'informacoesBoletoSacado') {
-          $dados[$k] =  utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-        else if($k === 'instrucoesObjetoCobranca') {
-          $dados[$k] =  utf8_decode($submission->data[$mapping[$k]][0]);
-        }
-      }    
-      gerar_boleto($dados,$submission,$nid);
-    }
-
-    function gerar_boleto($dados,$submission,$nid) {
-      require_once('config.php');
-      require_once('nusoap/lib/nusoap.php');
-      
-      $retorno = null;
-      $erro = null;
-      
-      $wsdl_path = 'http://' . $_SERVER['HTTP_HOST'] . base_path() . drupal_get_path('module', 'boletousp') . '/wsdl/boleto.wsdl';
-      $clienteSoap = new nusoap_client($wsdl_path, 'wsdl');
-
-      $erro = $clienteSoap->getError();
-      if ($erro){
-        print_r($erro); // issue3: mandar para log do Drupal.
-        exit;
-      }
-
-      $soapHeaders = array('username' => USERNAME_WSDL, 'password' => PASSWORD_WSDL);
-      $clienteSoap->setHeaders($soapHeaders);
-
-      //faz a requisição SOAP para gerar o codigo do boleto
-      $retorno = $clienteSoap->call('gerarBoleto', array('requisicao' => $dados));
-
-      //verifica se houve erro na geração do boleto.
-      if ($clienteSoap->fault) {
-        print_r($retorno["detail"]["WSException"]); // issue3: mandar para log do Drupal.
-        exit;
-      }
-      else {
-        $codigoIDBoleto = $retorno['identificacao']['codigoIDBoleto'];
-        $param = array('codigoIDBoleto' => $codigoIDBoleto);
-	      $retorno = $clienteSoap->call('obterBoleto', array('identificacao' => $param));
-	      if ($clienteSoap->fault) {
-		      print_r($retorno);  // issue3: mandar para log do Drupal.
-		      exit;
-	      }
-	      if ($clienteSoap->getError()){
-		      print_r($retorno); // issue3: mandar para log do Drupal.
-		      exit;
-	      } 
-        file_save_data(base64_decode($retorno['boletoPDF']),'public://' . "/{$nid}{$submission->sid}{$dados['cpfCnpj']}" . ".pdf");
-      }
-*/
 
