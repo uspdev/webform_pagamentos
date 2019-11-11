@@ -40,7 +40,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_informacoesBoletoSacado' => 'Nome do evento, curso, palestra ...',
       'boletousp_instrucoesObjetoCobranca' => 'Não receber após o vencimento.',
       'boletousp_codigoEmail' => '',
-      'boletousp_nomeSacado' => '',
+      'boletousp_nomeSacado' => ''  ,
       'boletousp_cpfCnpj' => '',
       'boletousp_valorDocumento' => '',
     ];
@@ -108,7 +108,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
-
     $data = $webform_submission->getData();
     $data['codigo_boleto_gerado'] = Gera::gera($data, $element);
     $webform_submission->setData($data);
@@ -174,7 +173,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $form['boletousp']['boletousp_container']['boletousp_instrucoesObjetoCobranca'] = [
       '#type' => 'textfield',
       '#attributes'  => ['size' => 125],
-      '#title' => $this->t('Instruçoes do objeto de cobrança'),
+      '#title' => $this->t('Instruções do objeto de cobrança'),
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [

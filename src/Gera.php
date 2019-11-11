@@ -1,13 +1,44 @@
 <?php
 
 namespace Drupal\webform_boleto_usp;
+use Uspdev\Boleto;
 
 class Gera {
 
     public static function gera($data, $element){
+
+        $boleto = new Boleto('fflch',''); 
+
+    //array com campos mínimos para geração do boleto
+    $data = array(
+        'codigoUnidadeDespesa' => 8,
+        'nomeFonte' => 'Taxas', 
+        'nomeSubfonte' => utf8_decode('Congressos/Seminários/Palestras/Simpósios') , 
+        'estruturaHierarquica' => '\FFLCH\SCINFOR',   
+        'codigoConvenio' => 0 ,  
+        'dataVencimentoBoleto' => '12/12/2019', 
+        'valorDocumento' => 1.5, 
+        'valorDesconto' => 0, 
+        'tipoSacado' => 'PF', 
+        'cpfCnpj' => '33838180801', 
+        'nomeSacado' => 'Fulano',
+        'codigoEmail' => 'thiago.verissimo@usp.br',  
+        'informacoesBoletoSacado' => utf8_decode('Qualquer informações que queira colocar'),
+        'instrucoesObjetoCobranca' => utf8_decode('Não receber após vencimento!')
+    );
+
+    $id = $boleto->gerar($data);
+    die($id);
+
+
+
         // $element['#boletousp_valor'];
-        die("Cheguei");
+        //echo "<pre>"; var_dump($data); var_dump($element); die("Cheguei");
     }
+
+}
+
+/*
 
     function dados_boleto($mapping, $submission,$nid){
       $dados = array();
@@ -99,4 +130,5 @@ class Gera {
 	      } 
         file_save_data(base64_decode($retorno['boletoPDF']),'public://' . "/{$nid}{$submission->sid}{$dados['cpfCnpj']}" . ".pdf");
       }
-}
+*/
+
