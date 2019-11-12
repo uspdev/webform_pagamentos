@@ -31,15 +31,24 @@ class WebformBoletoUspForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('webform_boleto_usp.settings');
-    $form['user_id'] = [
+    $form['auth'] = [
+      '#type' => 'details',
+      '#title' => $this->t('WebServer Autenticação'),
+      '#description' => $this->t(''),
+      '#open' => TRUE,
+    ];
+    $form['auth']['user_id'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Usuário. Exemplo: fflch'),
+      '#title' => $this->t('Usuário'),
+      '#size' => 15,
+      '#required' => TRUE,
       '#default_value' => $config->get('user_id'),
     ];
-    $form['token'] = [
-      '#type' => 'textfield',
+    $form['auth']['token'] = [
+      '#type' => 'password',
       '#title' => $this->t('Token'),
-      '#default_value' => $config->get('user_id'),
+      '#required' => TRUE,
+      '#default_value' => $config->get('token'),
     ];
     return parent::buildForm($form, $form_state);
   }
