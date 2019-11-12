@@ -4,5 +4,5 @@ webform_boleto_usp.settings:
     _form: '\Drupal\webform_boleto_usp\Form\WebformBoletoUspForm'
     _title: 'Boleto USP'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer boleto module'
 

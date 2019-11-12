@@ -1,4 +1,4 @@
-name: webform boleto USP
+name: Webform Boleto USP
 description: 'Gera boleto USP'
 type: module
 core: 8.x
