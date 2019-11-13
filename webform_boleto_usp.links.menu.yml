@@ -1,0 +1,5 @@
+webform_boleto_usp.form:
+  title: Boleto USP
+  description: 'Configurar Boleto USP'
+  parent: system.admin_config_system
+  route_name: webform_boleto_usp.settings

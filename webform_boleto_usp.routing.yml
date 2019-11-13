@@ -1,0 +1,8 @@
+webform_boleto_usp.settings:
+  path: '/admin/config/boleto-usp'
+  defaults:
+    _form: '\Drupal\webform_boleto_usp\Form\WebformBoletoUspForm'
+    _title: 'Boleto USP'
+  requirements:
+    _permission: 'administer boleto module'
+
