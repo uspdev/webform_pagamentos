@@ -6,3 +6,11 @@ webform_boleto_usp.settings:
   requirements:
     _permission: 'administer boleto module'
 
+
+webform_boleto_usp.boleto_controller_gera:
+  path: '/webform_boleto_usp/{webform_submission_id}'
+  defaults:
+    _controller: '\Drupal\webform_boleto_usp\Controller\BoletoController::gera'
+    _title: 'gera'
+  requirements:
+    _permission: 'access content'
