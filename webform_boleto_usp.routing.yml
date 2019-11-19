@@ -8,7 +8,7 @@ webform_boleto_usp.settings:
 
 
 webform_boleto_usp.boleto_controller_gera:
-  path: '/webform_boleto_usp/{webform_submission_id}'
+  path: '/boleto/{webform_submission_id}'
   defaults:
     _controller: '\Drupal\webform_boleto_usp\Controller\BoletoController::gera'
     _title: 'gera'
