@@ -30,18 +30,18 @@ class WebformElementBoletoUSP extends WebformElementBase {
       // Flexbox.
       'flex' => 1,
       # Campos do boleto
-      'boletousp_codigoUnidadeDespesa' => '8',
+      'boletousp_codigoUnidadeDespesa' => '',
       'boletousp_nomeFonte' => '',
       'boletousp_nomeSubfonte' => '',
-      'boletousp_estruturaHierarquica' => '\FFLCH',
+      'boletousp_estruturaHierarquica' => '',
       'boletousp_dataVencimentoBoleto' =>'',
-      'boletousp_valorDesconto' =>'0', // Não exposto ao usuário
-      'boletousp_tipoSacado' =>'PF', // Não exposto ao usuário
-      'boletousp_informacoesBoletoSacado' => 'Nome do evento, curso, palestra ...',
-      'boletousp_instrucoesObjetoCobranca' => 'Não receber após o vencimento.',
-      'boletousp_codigoEmail' => 'email',
-      'boletousp_nomeSacado' => 'nome'  ,
-      'boletousp_cpfCnpj' => 'cpf',
+      'boletousp_valorDesconto' =>'', // Não exposto ao usuário
+      'boletousp_tipoSacado' =>'', // Não exposto ao usuário
+      'boletousp_informacoesBoletoSacado' => '',
+      'boletousp_instrucoesObjetoCobranca' => '',
+      'boletousp_codigoEmail' => '',
+      'boletousp_nomeSacado' => ''  ,
+      'boletousp_cpfCnpj' => '',
       'boletousp_valorDocumento' => '',
     ];
   }
@@ -132,8 +132,9 @@ class WebformElementBoletoUSP extends WebformElementBase {
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_codigoUnidadeDespesa'] = [
-      '#type' => 'integer',
+      '#type' => 'number',
       '#title' => $this->t('Unidade de despesa'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_nomeFonte'] = [
@@ -142,6 +143,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#options'    => [
          'Taxas' => 'Taxas',
        ],
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_nomeSubfonte'] = [
@@ -152,33 +154,38 @@ class WebformElementBoletoUSP extends WebformElementBase {
          'Cursos' => 'Cursos',
          'Inscrição de Cursos' => 'Inscrição de Cursos',
        ],
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_estruturaHierarquica'] = [
       '#type' => 'textfield',
       '#attributes'  => ['size' => 125],
       '#title' => $this->t('Centro Gerencial'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
       '#type' => 'date',
       '#title' => $this->t('Data de vencimento do boleto'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_informacoesBoletoSacado'] = [
       '#type' => 'textfield',
       '#attributes'  => ['size' => 125],
       '#title' => $this->t('Informações boleto sacado'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_instrucoesObjetoCobranca'] = [
       '#type' => 'textfield',
       '#attributes'  => ['size' => 125],
       '#title' => $this->t('Instruções do objeto de cobrança'),
+      '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [
-      '#type'        => 'number',
+      '#type'        => 'textfield',
       '#description' => $this->t("Valor do boleto, exemplo: 10,50"),
       '#title'       => $this->t('Valor'),
 //      '#prefix'      => 'R$',
@@ -212,6 +219,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo cpf"),
       '#attributes'  => ['size' => 25],
       '#title' => $this->t('Chave para campo cpf'),
+      '#required'    => TRUE,
     ];
 
     return $form;

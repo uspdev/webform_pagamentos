@@ -20,7 +20,10 @@ class BoletoController extends ControllerBase {
       $data = $webform_submission->getData();
       if(isset($data['id_boleto']) && !empty($data['id_boleto'])){
         
-        $boleto = new Boleto('fflch','');
+        $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+
+        $boleto = new Boleto($config->get('user_id'),$config->get('token'));
+
         $boleto->obter($data['id_boleto']);
 
       }

@@ -5,33 +5,34 @@ use Uspdev\Boleto;
 
 class Gera {
 
+    public static function converteData($vencimento){
+        return implode('/',array_reverse(explode('-',$vencimento)));
+    }
+
     public static function gera($data, $element){
 
-        /* Ricardo: Criar uma tela de configuração para salvar user/token
-          Exemplo: https://github.com/uspdev/senhaunicausp-drupal/blob/8.x-1.x/src/Form/SenhaunicauspForm.php */
-        $boleto = new Boleto('fflch','abc'); 
+        $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
 
-        /* Augusto: fazer o bind de element/data para gerar o form */
-        $data = array(
-            'codigoUnidadeDespesa' => 8,
-            'nomeFonte' => 'Taxas', 
-            'nomeSubfonte' => utf8_decode('Congressos/Seminários/Palestras/Simpósios') , 
-            'estruturaHierarquica' => '\FFLCH\SCINFOR',   
+        $boleto = new Boleto($config->get('user_id'),$config->get('token'));
+
+        $output = array(
+            'codigoUnidadeDespesa' => $element["#boletousp_codigoUnidadeDespesa"],
+            'nomeFonte' => $element["#boletousp_nomeFonte"], 
+            'nomeSubfonte' => $element["#boletousp_nomeSubfonte"], 
+            'estruturaHierarquica' => $element["#boletousp_estruturaHierarquica"],   
             'codigoConvenio' => 0 ,  
-            'dataVencimentoBoleto' => '12/12/2019', 
-            'valorDocumento' => 1.5,
+            'dataVencimentoBoleto' => Gera::converteData($element["#boletousp_dataVencimentoBoleto"]),
+            'valorDocumento' => str_replace(',','.',$element["#boletousp_valorDocumento"]),
             'valorDesconto' => 0, 
             'tipoSacado' => 'PF', 
-            'cpfCnpj' => '33838180801', 
-            'nomeSacado' => $data[$element->boletousp_nomeSacado],
-            'codigoEmail' => 'thiago.verissimo@usp.br',  
-            'informacoesBoletoSacado' => utf8_decode('Qualquer informações que queira colocar'),
-            'instrucoesObjetoCobranca' => utf8_decode('Não receber após vencimento!')
+            'cpfCnpj' => $data[$element["#boletousp_cpfCnpj"]], 
+            'nomeSacado' => $data[$element["#boletousp_nomeSacado"]],
+            'codigoEmail' => $data[$element["#boletousp_codigoEmail"]],  
+            'informacoesBoletoSacado' => $element["#boletousp_informacoesBoletoSacado"],
+            'instrucoesObjetoCobranca' => $element["#boletousp_instrucoesObjetoCobranca"]
         );
 
-        return $boleto->gerar($data);
-        /* Thiago: Dado um id, mostrar o pdf do boleto */
-        /* Nos resultados, exportar a situação: pago, cancelado, vencido etc*/
+        return $boleto->gerar($output);
     }
 }
 
