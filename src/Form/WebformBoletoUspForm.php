@@ -45,7 +45,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
       '#default_value' => $config->get('user_id'),
     ];
     $form['auth']['token'] = [
-      '#type' => 'password',
+      '#type' => 'textfield',
       '#title' => $this->t('Token'),
       '#required' => TRUE,
       '#default_value' => $config->get('token'),
