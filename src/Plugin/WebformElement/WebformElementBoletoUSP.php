@@ -31,8 +31,9 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'flex' => 1,
       # Campos do boleto
       'boletousp_codigoUnidadeDespesa' => '',
-      'boletousp_nomeFonte' => '',
-      'boletousp_nomeSubfonte' => '',
+      'boletousp_codigoFonteRecurso' => '',
+      'boletousp_cepSacado' => '',
+      'boletousp_numeroUspUsuario' => '',
       'boletousp_estruturaHierarquica' => '',
       'boletousp_dataVencimentoBoleto' =>'',
       'boletousp_valorDesconto' =>'', // Não exposto ao usuário
@@ -137,23 +138,9 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#required'    => TRUE,
     ];
 
-    $form['boletousp']['boletousp_container']['boletousp_nomeFonte'] = [
-      '#type'        => 'select',
-      '#title'       => $this->t('Fonte'),
-      '#options'    => [
-         'Taxas' => 'Taxas',
-       ],
-      '#required'    => TRUE,
-    ];
-
-    $form['boletousp']['boletousp_container']['boletousp_nomeSubfonte'] = [
-      '#type'        => 'select',
-      '#title'       => $this->t('SubFonte'),
-      '#options'    => [
-         'Congressos/Seminários/Palestras/Simpósios' => 'Congressos/Seminários/Palestras/Simpósios',
-         'Cursos' => 'Cursos',
-         'Inscrição de Cursos' => 'Inscrição de Cursos',
-       ],
+    $form['boletousp']['boletousp_container']['boletousp_codigoFonteRecurso'] = [
+      '#type'        => 'number',
+      '#title'       => $this->t('Código fonte de recurso'),
       '#required'    => TRUE,
     ];
 
@@ -222,7 +209,22 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#required'    => TRUE,
     ];
 
+    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cepSacado'] = [
+      '#type' => 'textfield',
+      '#description' => $this->t("Chave para campo CEP"),
+      '#attributes'  => ['size' => 25],
+      '#title' => $this->t('Chave para campo CEP'),
+      '#required'    => TRUE,
+    ];
+
+    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspUsuario'] = [
+      '#type' => 'textfield',
+      '#description' => $this->t("Chave para campo número USP"),
+      '#attributes'  => ['size' => 25],
+      '#title' => $this->t('Chave para campo número USP'),
+      '#required'    => FALSE,
+    ];
+
     return $form;
   }
-
 }
