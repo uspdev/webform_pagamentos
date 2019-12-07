@@ -32,7 +32,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       # Campos do boleto
       'boletousp_codigoUnidadeDespesa' => '',
       'boletousp_codigoFonteRecurso' => '',
-      'boletousp_cepSacado' => '',
       'boletousp_numeroUspUsuario' => '',
       'boletousp_estruturaHierarquica' => '',
       'boletousp_dataVencimentoBoleto' =>'',
@@ -44,6 +43,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_nomeSacado' => ''  ,
       'boletousp_cpfCnpj' => '',
       'boletousp_valorDocumento' => '',
+      'boletousp_cepSacado' => '',
     ];
   }
 
@@ -111,7 +111,14 @@ class WebformElementBoletoUSP extends WebformElementBase {
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
     $data = $webform_submission->getData();
-    $data['id_boleto'] = Gera::gera($data, $element);
+
+    $gerar = Gera::gera($data, $element);
+    $data['boleto_status'] = $gerar['status'];
+    if($data['boleto_status']) 
+        $data['boleto_id'] = $gerar['value'];
+    else
+        $data['boleto_erro'] = $gerar['value'];
+
     $webform_submission->setData($data);
   }
 
@@ -214,7 +221,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo CEP"),
       '#attributes'  => ['size' => 25],
       '#title' => $this->t('Chave para campo CEP'),
-      '#required'    => TRUE,
+      '#required'    => FALSE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspUsuario'] = [

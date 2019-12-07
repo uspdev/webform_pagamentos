@@ -28,13 +28,16 @@ class Gera {
             /* Campos mapeados */
             'cpfCnpj' => $data[$element["#boletousp_cpfCnpj"]], 
             'nomeSacado' => $data[$element["#boletousp_nomeSacado"]],
-            'codigoEmail' => $data[$element["#boletousp_codigoEmail"]],  
-            'cepSacado' => $data[$element["#boletousp_cepSacado"]],  
+            'codigoEmail' => $data[$element["#boletousp_codigoEmail"]]
         );
         
         /* Campos opicionais */
         if(!is_null($element["#boletousp_numeroUspUsuario"]) && !empty($element["#boletousp_numeroUspUsuario"])){
             $output['numeroUspUsuario'] = $data[$element["#boletousp_numeroUspUsuario"]];
+        }
+
+        if(!is_null($element["#boletousp_cepSacado"]) && !empty($element["#boletousp_cepSacado"])){
+            $output['cepSacado'] = $data[$element["#boletousp_cepSacado"]];
         }
 
         return $boleto->gerar($output);

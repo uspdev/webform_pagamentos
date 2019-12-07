@@ -14,24 +14,30 @@ class BoletoController extends ControllerBase {
   public function gera($webform_submission_id) {
     $webform_submission = WebformSubmission::load($webform_submission_id);
 
+    $msg = '';
+
     if($webform_submission) {
 
       /* Verificamos se há boleto gerado para esse webform_submission */
       $data = $webform_submission->getData();
-      if(isset($data['id_boleto']) && !empty($data['id_boleto'])){
+      if(isset($data['boleto_status'])){
         
-        $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
-
-        $boleto = new Boleto($config->get('user_id'),$config->get('token'));
-
-        $boleto->obter($data['id_boleto']);
-
+        if($data['boleto_status'] == true) {
+            $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+            $boleto = new Boleto($config->get('user_id'),$config->get('token'));
+            $boleto->obter($data['boleto_id']);
+        } else {
+            $msg = $data['boleto_erro'];
+        }
       }
+    }
+    else {
+        $msg = "Não existe submissão com id {$webform_submission_id}";
     }
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t('Não foi possível gerar o boleto.'),
+      '#markup' => $this->t("Não foi possível gerar o boleto: {$msg}"),
     ];
   }
 
