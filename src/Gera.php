@@ -16,12 +16,10 @@ class Gera {
 
         $output = array(
             'codigoUnidadeDespesa' => $element["#boletousp_codigoUnidadeDespesa"],
-            'codigoFonteRecurso' => $element["#boletousp_codigoFonteRecurso"], 
-            'estruturaHierarquica' => $element["#boletousp_estruturaHierarquica"],   
-            'codigoConvenio' => 0 ,  
+            'codigoFonteRecurso' => $element["#boletousp_codigoFonteRecurso"],
+            'estruturaHierarquica' => $element["#boletousp_estruturaHierarquica"],
             'dataVencimentoBoleto' => Gera::converteData($element["#boletousp_dataVencimentoBoleto"]),
             'valorDocumento' => str_replace(',','.',$element["#boletousp_valorDocumento"]),
-            'valorDesconto' => 0, 
             'tipoSacado' => 'PF', 
             'informacoesBoletoSacado' => $element["#boletousp_informacoesBoletoSacado"],
             'instrucoesObjetoCobranca' => $element["#boletousp_instrucoesObjetoCobranca"],

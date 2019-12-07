@@ -35,8 +35,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_numeroUspUsuario' => '',
       'boletousp_estruturaHierarquica' => '',
       'boletousp_dataVencimentoBoleto' =>'',
-      'boletousp_valorDesconto' =>'', // Não exposto ao usuário
-      'boletousp_tipoSacado' =>'', // Não exposto ao usuário
       'boletousp_informacoesBoletoSacado' => '',
       'boletousp_instrucoesObjetoCobranca' => '',
       'boletousp_codigoEmail' => '',
