@@ -155,7 +155,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#title' => $this->t('Centro Gerencial'),
       '#options'    => $centros,
       '#required'    => TRUE,
-      '#other' => t('Other (please type a value)'),
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
