@@ -15,7 +15,7 @@ class Gera {
         $boleto = new Boleto($config->get('user_id'),$config->get('token'));
 
         $output = array(
-            'codigoUnidadeDespesa' => $element["#boletousp_codigoUnidadeDespesa"],
+            'codigoUnidadeDespesa' => $config->get('codigoUnidadeDespesa'),
             'codigoFonteRecurso' => $element["#boletousp_codigoFonteRecurso"],
             'estruturaHierarquica' => $element["#boletousp_estruturaHierarquica"],
             'dataVencimentoBoleto' => Gera::converteData($element["#boletousp_dataVencimentoBoleto"]),

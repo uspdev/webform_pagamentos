@@ -30,7 +30,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       // Flexbox.
       'flex' => 1,
       # Campos do boleto
-      'boletousp_codigoUnidadeDespesa' => '',
       'boletousp_codigoFonteRecurso' => '',
       'boletousp_numeroUspUsuario' => '',
       'boletousp_estruturaHierarquica' => '',
@@ -79,14 +78,14 @@ class WebformElementBoletoUSP extends WebformElementBase {
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
-    /* Elements para mapeamento CPF e email */
+    /* Elementos para mapeamento */
     $elements = [];
     $obj_elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
     foreach($obj_elements as $key=>$element){
         $elements[$key] = $element['#title'];
     }
 
-    /** Aqui vamos verificar se os campos chave informados
+    /** TODO: Aqui vamos verificar se os campos chave informados
      *  pelo administrador(a) do formulário existe antes de mostrar o
      *  formulário para preenchimento. Senão existir, mostrar um erro e
      *  não deixar o mesmo ser submetido.
@@ -137,23 +136,26 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#type' => 'container',
     ];
 
-    $form['boletousp']['boletousp_container']['boletousp_codigoUnidadeDespesa'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Unidade de despesa'),
-      '#required'    => TRUE,
-    ];
-
     $form['boletousp']['boletousp_container']['boletousp_codigoFonteRecurso'] = [
       '#type'        => 'number',
       '#title'       => $this->t('Código fonte de recurso'),
       '#required'    => TRUE,
     ];
 
+    /* Preparando centros de despesas*/
+    $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+    $temp = explode("\n",$config->get('estruturaHierarquica'));
+    $centros = [];
+    foreach($temp as $i){
+        $centros[trim($i)] = trim($i);
+    }
+
     $form['boletousp']['boletousp_container']['boletousp_estruturaHierarquica'] = [
-      '#type' => 'textfield',
-      '#attributes'  => ['size' => 125],
+      '#type'        => 'select',
       '#title' => $this->t('Centro Gerencial'),
+      '#options'    => $centros,
       '#required'    => TRUE,
+      '#other' => t('Other (please type a value)'),
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
