@@ -29,7 +29,8 @@ class Gera {
             'codigoEmail' => $data[$element["#boletousp_codigoEmail"]]
         );
         
-        /* Campos opicionais */
+        /* Campos opicionais - verificar, pois da warning*/
+        /*
         if(!is_null($element["#boletousp_numeroUspUsuario"]) && !empty($element["#boletousp_numeroUspUsuario"])){
             $output['numeroUspUsuario'] = $data[$element["#boletousp_numeroUspUsuario"]];
         }
@@ -37,7 +38,7 @@ class Gera {
         if(!is_null($element["#boletousp_cepSacado"]) && !empty($element["#boletousp_cepSacado"])){
             $output['cepSacado'] = $data[$element["#boletousp_cepSacado"]];
         }
-
+        */
         return $boleto->gerar($output);
     }
 }
