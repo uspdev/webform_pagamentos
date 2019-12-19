@@ -79,11 +79,13 @@ class WebformElementBoletoUSP extends WebformElementBase {
     parent::prepare($element, $webform_submission);
 
     /* Elementos para mapeamento */
+    /*
     $elements = [];
     $obj_elements = $webform_submission->getWebform()->getElementsDecodedAndFlattened();
     foreach($obj_elements as $key=>$element){
         $elements[$key] = $element['#title'];
     }
+    */
 
     /** TODO: Aqui vamos verificar se os campos chave informados
      *  pelo administrador(a) do formulário existe antes de mostrar o
