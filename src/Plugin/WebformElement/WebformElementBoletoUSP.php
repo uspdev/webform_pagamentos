@@ -6,6 +6,7 @@ use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform_boleto_usp\Gera;
+use Drupal\webform\WebformInterface;
 
 /**
  * Provides a 'boletoUSP' element.
@@ -109,15 +110,41 @@ class WebformElementBoletoUSP extends WebformElementBase {
    * {@inheritdoc}
    */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
+
+    /* Validações de email e cpf */
+    $webform = $webform_submission->getWebform();
+    $handler_manager = \Drupal::service('plugin.manager.webform.handler');
+
+    $handler_configuration = [
+      'id' => 'webform_boleto_usp_validator',
+      'label' => 'validations',
+      'handler_id' => 'webform_boleto_usp_validator',
+      'status' => 1,
+      'weight' => 0,
+      'settings' => [],
+    ];
+    $handler = $handler_manager->createInstance('webform_boleto_usp_validator',
+               $handler_configuration);
+
+    // Must set original id so that the webform can be resaved.
+    $webform->setOriginalId($webform->id());
+
+    // Add webform handler which triggers Webform::save().
+    $webform->addWebformHandler($handler);
+
+    /* Gerar boleto depois da validação */
     $data = $webform_submission->getData();
-
     $gerar = Gera::gera($data, $element);
-    $data['boleto_status'] = $gerar['status'];
-    if($data['boleto_status']) 
-        $data['boleto_id'] = $gerar['value'];
-    else
-        $data['boleto_erro'] = $gerar['value'];
 
+    $data[$element["#boletousp_cpfCnpj"]] = \Drupal::service('cpf')
+                ->digits($data[$element["#boletousp_cpfCnpj"]]);
+
+    $data['boleto_status'] = $gerar['status'];
+    if($data['boleto_status']) {
+      $data['boleto_id'] = $gerar['value'];
+    } else {
+      $data['boleto_erro'] = $gerar['value'];
+    }
     $webform_submission->setData($data);
   }
 
@@ -127,11 +154,11 @@ class WebformElementBoletoUSP extends WebformElementBase {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    $boletousp_types = ['default' => $this->t('Default challenge type')];
+    //$boletousp_types = ['default' => $this->t('Default challenge type')];
 
     $form['boletousp'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Configurações do BoletoUSP'),
+      '#title' => $this->t('Configurações do Boleto USP'),
     ];
 
     $form['boletousp']['boletousp_container'] = [

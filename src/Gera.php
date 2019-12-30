@@ -24,7 +24,7 @@ class Gera {
             'informacoesBoletoSacado' => $element["#boletousp_informacoesBoletoSacado"],
             'instrucoesObjetoCobranca' => $element["#boletousp_instrucoesObjetoCobranca"],
             /* Campos mapeados */
-            'cpfCnpj' => $data[$element["#boletousp_cpfCnpj"]], 
+            'cpfCnpj' => \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]), 
             'nomeSacado' => $data[$element["#boletousp_nomeSacado"]],
             'codigoEmail' => $data[$element["#boletousp_codigoEmail"]]
         );
