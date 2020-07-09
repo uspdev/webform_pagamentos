@@ -25,7 +25,7 @@ class BoletoController extends ControllerBase {
         if($data['boleto_status'] == true) {
             $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
             $boleto = new Boleto($config->get('user_id'),$config->get('token'));
-            $boleto->obter($data['boleto_id']);
+            return $boleto->obter($data['boleto_id']);
         } else {
             $msg = $data['boleto_erro'];
         }
