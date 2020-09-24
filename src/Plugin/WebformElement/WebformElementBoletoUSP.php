@@ -32,7 +32,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'flex' => 1,
       # Campos do boleto
       'boletousp_codigoFonteRecurso' => '',
-      'boletousp_numeroUspUsuario' => '',
       'boletousp_estruturaHierarquica' => '',
       'boletousp_dataVencimentoBoleto' =>'',
       'boletousp_informacoesBoletoSacado' => '',
@@ -41,7 +40,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       'boletousp_nomeSacado' => ''  ,
       'boletousp_cpfCnpj' => '',
       'boletousp_valorDocumento' => '',
-      'boletousp_cepSacado' => '',
     ];
   }
 
@@ -242,22 +240,6 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#attributes'  => ['size' => 25],
       '#title' => $this->t('Chave para campo cpf'),
       '#required'    => TRUE,
-    ];
-
-    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cepSacado'] = [
-      '#type' => 'textfield',
-      '#description' => $this->t("Chave para campo CEP"),
-      '#attributes'  => ['size' => 25],
-      '#title' => $this->t('Chave para campo CEP'),
-      '#required'    => FALSE,
-    ];
-
-    $form['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspUsuario'] = [
-      '#type' => 'textfield',
-      '#description' => $this->t("Chave para campo número USP"),
-      '#attributes'  => ['size' => 25],
-      '#title' => $this->t('Chave para campo número USP'),
-      '#required'    => FALSE,
     ];
 
     return $form;
