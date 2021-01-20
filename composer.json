@@ -4,7 +4,6 @@
     "type": "drupal-module",
     "require": {
         "uspdev/boleto": "1.0.7",
-        "drupal/cpf": "^1.2"
     },
     "authors": [
         {
