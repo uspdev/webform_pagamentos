@@ -2,6 +2,7 @@
     "name": "uspdev/webform_boleto_usp",
     "description": "Gera boletos usando api USP",
     "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
     "require": {
         "uspdev/boleto": "1.0.7"
     },
