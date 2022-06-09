@@ -49,7 +49,17 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     $email_key     = $elements['boletousp']['#boletousp_codigoEmail'];
     $nome_key      = $elements['boletousp']['#boletousp_nomeSacado'];
     $numeroUsp_key = $elements['boletousp']['#boletousp_numeroUspSacado'];
-    $keys          = [$cpf_key, $email_key, $nome_key];
+
+    /* O número USP ou o cpf devem ser obrigatórios */
+    if(empty($data[$cpf_key]) and empty($data[$numeroUsp_key])){
+      $formState->setErrorByName($nome_key, 
+          $this->t('O número USP ou o cpf devem ser obrigatórios'));
+    }
+
+    $keys = [$email_key, $nome_key];
+
+    if(!empty($data[$cpf_key])) array_push($keys, $cpf_key);
+    if(!empty($data[$numeroUsp_key])) array_push($keys, $numeroUsp_key);
 
     foreach($keys as $key) {
         if(!array_key_exists($key, $data))
@@ -58,12 +68,15 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     }
     
     /* Validação do cpf */
-    $cpf = \Drupal::service('cpf')->digits($data[$cpf_key]);
-    if(!\Drupal::service('cpf')->isValid($cpf)) {
-      if($cpf != '99999999999')
-        $formState->setErrorByName($cpf_key, 
-            $this->t('O número de CPF %cpf não é válido', ['%cpf' => $data[$cpf_key]]));
+    if(!empty($data[$cpf_key])){
+      $cpf = \Drupal::service('cpf')->digits($data[$cpf_key]);
+      if(!\Drupal::service('cpf')->isValid($cpf)) {
+        if($cpf != '99999999999')
+          $formState->setErrorByName($cpf_key, 
+              $this->t('O número de CPF %cpf não é válido', ['%cpf' => $data[$cpf_key]]));
+      }
     }
+
 
     /* TODO: validação do email */
 

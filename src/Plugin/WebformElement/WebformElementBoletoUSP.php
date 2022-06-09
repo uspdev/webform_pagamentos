@@ -240,7 +240,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo cpf"),
       '#attributes'  => ['size' => 25],
       '#title'       => $this->t('Chave para campo cpf'),
-      '#required'    => TRUE,
+      '#required'    => FALSE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspSacado'] = [
@@ -248,7 +248,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       '#description' => $this->t("Chave para campo número USP do sacado"),
       '#attributes'  => ['size' => 10],
       '#title'       => $this->t('Chave para campo número USP do sacado'),
-      '#required'    => TRUE,
+      '#required'    => FALSE,
     ];
 
     return $form;
