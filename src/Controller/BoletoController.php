@@ -24,14 +24,13 @@ class BoletoController extends ControllerBase {
       if(isset($data['boleto_status'])){
         
         if($data['boleto_status'] == true) {
-            $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
-            $boleto = new Boleto($config->get('user_id'),$config->get('token'));
-            $obter = $boleto->obter($data['boleto_id']);
+            $config   = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+            $boleto   = new Boleto($config->get('user_id'),$config->get('token'));
+            $obter    = $boleto->obter($data['boleto_id']);
             $response = new Response();
             $response->headers->set('Content-Type', 'application/pdf');
             $response->setContent(base64_decode($obter['value']));
             return $response;
-
         } else {
             $msg = $data['boleto_erro'];
         }
