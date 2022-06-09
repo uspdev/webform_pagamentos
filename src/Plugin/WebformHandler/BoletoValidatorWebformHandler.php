@@ -45,10 +45,11 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     $elements = $webform->getElementsInitializedAndFlattened();
 
     /* verifico se todos campos mapeados existem no formulário */
-    $cpf_key = $elements['boletousp']['#boletousp_cpfCnpj'];
-    $email_key = $elements['boletousp']['#boletousp_codigoEmail'];
-    $nome_key = $elements['boletousp']['#boletousp_nomeSacado'];
-    $keys = [$cpf_key, $email_key, $nome_key];
+    $cpf_key       = $elements['boletousp']['#boletousp_cpfCnpj'];
+    $email_key     = $elements['boletousp']['#boletousp_codigoEmail'];
+    $nome_key      = $elements['boletousp']['#boletousp_nomeSacado'];
+    $numeroUsp_key = $elements['boletousp']['#boletousp_numeroUspSacado'];
+    $keys          = [$cpf_key, $email_key, $nome_key];
 
     foreach($keys as $key) {
         if(!array_key_exists($key, $data))

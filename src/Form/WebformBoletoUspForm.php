@@ -32,37 +32,37 @@ class WebformBoletoUspForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('webform_boleto_usp.settings');
     $form['auth'] = [
-      '#type' => 'details',
-      '#title' => $this->t('WebServer Autenticação'),
+      '#type'        => 'details',
+      '#title'       => $this->t('WebServer Autenticação'),
       '#description' => $this->t(''),
-      '#open' => TRUE,
+      '#open'        => TRUE,
     ];
     $form['auth']['user_id'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Usuário'),
-      '#size' => 15,
-      '#required' => TRUE,
+      '#type'          => 'textfield',
+      '#title'         => $this->t('Usuário'),
+      '#size'          => 15,
+      '#required'      => TRUE,
       '#default_value' => $config->get('user_id'),
     ];
     $form['auth']['token'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Token'),
-      '#required' => TRUE,
+      '#type'          => 'textfield',
+      '#title'         => $this->t('Token'),
+      '#required'      => TRUE,
       '#default_value' => $config->get('token'),
     ];
     $form['auth']['codigoUnidadeDespesa'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Código da unidade despesa'),
-      '#size' => 15,
-      '#required' => TRUE,
+      '#type'          => 'number',
+      '#title'         => $this->t('Código da unidade despesa'),
+      '#size'          => 15,
+      '#required'      => TRUE,
       '#default_value' => $config->get('codigoUnidadeDespesa'),
     ];
     $form['auth']['estruturaHierarquica'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Centros de Despesas da Unidade'),
-      '#description' => $this->t("Um por linha"),
-      '#size' => 15,
-      '#required' => TRUE,
+      '#type'          => 'textarea',
+      '#title'         => $this->t('Centros de Despesas da Unidade'),
+      '#description'   => $this->t("Um centro por linha"),
+      '#size'          => 15,
+      '#required'      => TRUE,
       '#default_value' => $config->get('estruturaHierarquica'),
     ];
     return parent::buildForm($form, $form_state);
@@ -74,11 +74,11 @@ class WebformBoletoUspForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $this->config('webform_boleto_usp.settings')
-      ->set('user_id', $values['user_id'])
-      ->set('token', $values['token'])
-      ->set('codigoUnidadeDespesa', $values['codigoUnidadeDespesa'])
-      ->set('estruturaHierarquica', $values['estruturaHierarquica'])
-      ->save();
+         ->set('user_id', $values['user_id'])
+         ->set('token', $values['token'])
+         ->set('codigoUnidadeDespesa', $values['codigoUnidadeDespesa'])
+         ->set('estruturaHierarquica', $values['estruturaHierarquica'])
+         ->save();
     parent::submitForm($form, $form_state);
   }
 
