@@ -25,13 +25,11 @@ class Gera {
             'codigoEmail'              => $data[$element["#boletousp_codigoEmail"]],
         );
 
-        if(!empty($data[$element["#boletousp_numeroUspsacado"]]))
-            $output['numeroUspSacado'] = $data[$element["#boletousp_numeroUspsacado"]];
+        if(!empty($data[$element["#boletousp_numeroUspSacado"]]))
+            $output['numeroUspSacado'] = $data[$element["#boletousp_numeroUspSacado"]];
         else
             $output['cpfCnpj'] = \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]);
             
-        dd($output);
-
         return $boleto->gerar($output);
     }
 }
