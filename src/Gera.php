@@ -21,19 +21,15 @@ class Gera {
             'informacoesBoletoSacado'  => $element["#boletousp_informacoesBoletoSacado"],
             'instrucoesObjetoCobranca' => $element["#boletousp_instrucoesObjetoCobranca"],
             /* Campos mapeados */
-            'nomeSacado'      => $data[$element["#boletousp_nomeSacado"]],
-            'codigoEmail'     => $data[$element["#boletousp_codigoEmail"]],
-            'numeroUspSacado' => $data[$element["#boletousp_numeroUspSacado"]],
+            'nomeSacado'               => $data[$element["#boletousp_nomeSacado"]],
+            'codigoEmail'              => $data[$element["#boletousp_codigoEmail"]],
         );
 
-        if(!empty($data[$element["#boletousp_numeroUspsacado"]])){
-            array_push ... $output
-        }
-        'numeroUspsacado' = $data[$element["#boletousp_numeroUspsacado"]]
-
-        'cpfCnpj'         => \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]), 
-
-
+        if(!empty($data[$element["#boletousp_numeroUspSacado"]]))
+            $output['numeroUspSacado'] = $data[$element["#boletousp_numeroUspSacado"]];
+        else
+            $output['cpfCnpj'] = \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]);
+            
         return $boleto->gerar($output);
     }
 }

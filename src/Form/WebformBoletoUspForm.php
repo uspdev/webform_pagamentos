@@ -32,10 +32,10 @@ class WebformBoletoUspForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('webform_boleto_usp.settings');
     $form['auth'] = [
-      '#type'        => 'details',
-      '#title'       => $this->t('WebServer Autenticação'),
-      '#description' => $this->t(''),
-      '#open'        => TRUE,
+      '#type'          => 'details',
+      '#title'         => $this->t('WebServer Autenticação'),
+      '#description'   => $this->t(''),
+      '#open'          => TRUE,
     ];
     $form['auth']['user_id'] = [
       '#type'          => 'textfield',
@@ -52,7 +52,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
     ];
     $form['auth']['codigoUnidadeDespesa'] = [
       '#type'          => 'number',
-      '#title'         => $this->t('Código da unidade despesa'),
+      '#title'         => $this->t('Código da Unidade de Despesa'),
       '#size'          => 15,
       '#required'      => TRUE,
       '#default_value' => $config->get('codigoUnidadeDespesa'),
@@ -60,7 +60,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
     $form['auth']['estruturaHierarquica'] = [
       '#type'          => 'textarea',
       '#title'         => $this->t('Centros de Despesas da Unidade'),
-      '#description'   => $this->t("Um centro por linha"),
+      '#description'   => $this->t("Um Centro por linha"),
       '#size'          => 15,
       '#required'      => TRUE,
       '#default_value' => $config->get('estruturaHierarquica'),

@@ -41,7 +41,7 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     $data = $formState->getValues();
 
     /* Coletando os campos que estão mapeados */
-    $webform = $webform_submission->getWebform();
+    $webform  = $webform_submission->getWebform();
     $elements = $webform->getElementsInitializedAndFlattened();
 
     /* verifico se todos campos mapeados existem no formulário */
@@ -53,7 +53,7 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     /* O número USP ou o cpf devem ser obrigatórios */
     if(empty($data[$cpf_key]) and empty($data[$numeroUsp_key])){
       $formState->setErrorByName($nome_key, 
-          $this->t('O número USP ou o cpf devem ser obrigatórios'));
+          $this->t('O número USP ou o CPF deve ser informado'));
     }
 
     $keys = [$email_key, $nome_key];
@@ -68,7 +68,7 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     }
     
     /* Validação do cpf */
-    if(!empty($data[$cpf_key])){
+    if(!empty($cpf_key)){
       $cpf = \Drupal::service('cpf')->digits($data[$cpf_key]);
       if(!\Drupal::service('cpf')->isValid($cpf)) {
         if($cpf != '99999999999')

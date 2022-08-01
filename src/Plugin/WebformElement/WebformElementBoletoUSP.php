@@ -141,7 +141,8 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $data['boleto_status'] = $gerar['status'];
     if($data['boleto_status']) {
       $data['boleto_id'] = $gerar['value'];
-    } else {
+    } 
+    else {
       $data['boleto_erro'] = $gerar['value'];
     }
     $webform_submission->setData($data);
@@ -166,7 +167,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     $form['boletousp']['boletousp_container']['boletousp_codigoFonteRecurso'] = [
       '#type'        => 'number',
-      '#title'       => $this->t('Código Fonte de Recurso'),
+      '#title'       => $this->t('Código da Fonte de Recurso'),
       '#required'    => TRUE,
     ];
 
@@ -187,27 +188,27 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     $form['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
       '#type'     => 'date',
-      '#title'    => $this->t('Data de vencimento do boleto'),
+      '#title'    => $this->t('Data de Vencimento'),
       '#required' => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_informacoesBoletoSacado'] = [
       '#type'       => 'textfield',
       '#attributes' => ['size' => 125],
-      '#title'      => $this->t('Informações boleto sacado'),
+      '#title'      => $this->t('Informações do Sacado'),
       '#required'   => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_instrucoesObjetoCobranca'] = [
       '#type'       => 'textfield',
       '#attributes' => ['size' => 125],
-      '#title'      => $this->t('Instruções do objeto de cobrança'),
+      '#title'      => $this->t('Instruções do Objeto de Cobrança'),
       '#required'   => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [
       '#type'        => 'textfield',
-      '#description' => $this->t("Valor do boleto, exemplo: 10,50"),
+      '#description' => $this->t("Valor em reais (Ex.: 10,50)"),
       '#title'       => $this->t('Valor'),
       //'#prefix'    => 'R$',
       '#required'    => TRUE,
@@ -216,38 +217,38 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $form['boletousp']['boletousp_container']['mapeamento'] = [
       '#type'        => 'fieldset',
       '#description' => $this->t(""),
-      '#title'       => $this->t('Mapeamento com campos do formulário'),
+      '#title'       => $this->t('Mapeamento com campos do formuláriooo'),
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_codigoEmail'] = [
       '#type'        => 'textfield',
-      '#description' => $this->t("Chave para campo de email"),
+      '#description' => $this->t("Chave para o campo do E-mail"),
       '#attributes'  => ['size' => 25],
-      '#title'       => $this->t('Chave para campo de email'),
+      '#title'       => $this->t('Chave para o campo do E-mail'),
       '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_nomeSacado'] = [
       '#type'        => 'textfield',
-      '#description' => $this->t("Chave para campo nome do sacado"),
+      '#description' => $this->t("Chave para o campo do Nome do sacado"),
       '#attributes'  => ['size' => 25],
-      '#title'       => $this->t('Chave para campo nome do sacado'),
+      '#title'       => $this->t('Chave para o campo do Nome do sacado'),
       '#required'    => TRUE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_cpfCnpj'] = [
       '#type'        => 'textfield',
-      '#description' => $this->t("Chave para campo cpf"),
+      '#description' => $this->t("Chave para o campo do CPF"),
       '#attributes'  => ['size' => 25],
-      '#title'       => $this->t('Chave para campo cpf'),
+      '#title'       => $this->t('Chave para o campo do CPF'),
       '#required'    => FALSE,
     ];
 
     $form['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspSacado'] = [
       '#type'        => 'textfield',
-      '#description' => $this->t("Chave para campo número USP do sacado"),
+      '#description' => $this->t("Chave para o campo do número USP do sacado"),
       '#attributes'  => ['size' => 10],
-      '#title'       => $this->t('Chave para campo número USP do sacado'),
+      '#title'       => $this->t('Chave para o campo do número USP do sacado'),
       '#required'    => FALSE,
     ];
 
