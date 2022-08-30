@@ -25,11 +25,17 @@ class Gera {
             'codigoEmail'              => $data[$element["#boletousp_codigoEmail"]],
         );
 
-        if(!empty($data[$element["#boletousp_numeroUspSacado"]]))
+        if(!empty($data[$element["#boletousp_numeroUspSacado"]])) {
             $output['numeroUspSacado'] = $data[$element["#boletousp_numeroUspSacado"]];
-        else
-            $output['cpfCnpj'] = \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]);
+        } else {
+            if( empty(trim($data[$element["#boletousp_cpfCnpj"]]))) {
+                $output['cpfCnpj'] = '99999999999';
+            } else {
+                $output['cpfCnpj'] = \Drupal::service('cpf')->digits($data[$element["#boletousp_cpfCnpj"]]);
+            }
             
+        }
+
         return $boleto->gerar($output);
     }
 }

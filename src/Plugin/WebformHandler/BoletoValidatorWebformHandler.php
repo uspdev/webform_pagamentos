@@ -59,6 +59,7 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     $keys = [$email_key, $nome_key];
 
     if(!empty($data[$cpf_key])) array_push($keys, $cpf_key);
+
     if(!empty($data[$numeroUsp_key])) array_push($keys, $numeroUsp_key);
 
     foreach($keys as $key) {
@@ -68,10 +69,9 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     }
     
     /* Validação do cpf */
-    if(!empty($cpf_key)){
+    if(!empty($cpf_key) && !empty(trim($data[$cpf_key])) ){
       $cpf = \Drupal::service('cpf')->digits($data[$cpf_key]);
       if(!\Drupal::service('cpf')->isValid($cpf)) {
-        if($cpf != '99999999999')
           $formState->setErrorByName($cpf_key, 
               $this->t('O número de CPF %cpf não é válido', ['%cpf' => $data[$cpf_key]]));
       }
