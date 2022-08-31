@@ -51,7 +51,7 @@ class BoletoValidatorWebformHandler extends WebformHandlerBase {
     $numeroUsp_key = $elements['boletousp']['#boletousp_numeroUspSacado'];
 
     /* O número USP ou o cpf devem ser obrigatórios */
-    if(empty($data[$cpf_key]) and empty($data[$numeroUsp_key])){
+    if(empty(trim($cpf_key)) and empty(trim($numeroUsp_key))){
       $formState->setErrorByName($nome_key, 
           $this->t('O número USP ou o CPF deve ser informado'));
     }
