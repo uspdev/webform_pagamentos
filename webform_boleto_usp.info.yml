@@ -3,7 +3,7 @@ description: 'Gera boleto USP'
 type: module
 core_version_requirement: ^8 || ^9
 dependencies:
-  - webform
-  - cpf
+  - drupal:webform
+  - drupal:cpf
 configure: webform_boleto_usp.settings
 package: Universidade de São Paulo

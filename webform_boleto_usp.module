@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Módulo para Boleto USP
+ * Módulo para Boleto USP.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
