@@ -1,7 +1,7 @@
 name: Webform Boleto USP
 description: 'Gera boleto USP'
 type: module
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10 || ^11
 dependencies:
   - webform
   - cpf
