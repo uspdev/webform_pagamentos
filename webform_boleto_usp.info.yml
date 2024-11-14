@@ -4,6 +4,5 @@ type: module
 core_version_requirement: ^8 || ^9 || ^10 || ^11
 dependencies:
   - webform
-  - cpf
 configure: webform_boleto_usp.settings
 package: Universidade de São Paulo
