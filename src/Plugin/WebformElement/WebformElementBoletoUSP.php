@@ -135,8 +135,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $data = $webform_submission->getData();
     $gerar = Gera::gera($data, $element);
 
-    $data[$element["#boletousp_cpfCnpj"]] = \Drupal::service('cpf')
-                ->digits($data[$element["#boletousp_cpfCnpj"]]);
+    $data[$element["#boletousp_cpfCnpj"]] = preg_replace( '/[^0-9]/is', '', $data[$element["#boletousp_cpfCnpj"]]);
 
     $data['boleto_status'] = $gerar['status'];
     if($data['boleto_status']) {
