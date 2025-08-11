@@ -33,6 +33,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
       # Campos do boleto
       'boletousp_codigoFonteRecurso'       => '',
       'boletousp_estruturaHierarquica'     => '',
+      'boletousp_paytype'                  => '',
       'boletousp_dataVencimentoBoleto'     => '',
       'boletousp_informacoesBoletoSacado'  => '',
       'boletousp_instrucoesObjetoCobranca' => '',
@@ -140,7 +141,7 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $data['boleto_status'] = $gerar['status'];
     if($data['boleto_status']) {
       $data['boleto_id'] = $gerar['value'];
-    } 
+    }
     else {
       $data['boleto_erro'] = $gerar['value'];
     }
@@ -155,6 +156,23 @@ class WebformElementBoletoUSP extends WebformElementBase {
 
     //$boletousp_types = ['default' => $this->t('Default challenge type')];
 
+    $form['paytype'] = [
+      '#type'  => 'fieldset',
+      '#title' => $this->t('paytype'),
+    ];
+
+
+    $form['paytype']['boletousp_paytype'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Pix or Boleto'),
+      '#options' => [
+        'pix' => $this->t('Pix'),
+        'boleto' => $this->t('Boleto'),
+      ],
+      '#required' => TRUE,
+    ];
+
+
     $form['boletousp'] = [
       '#type'  => 'fieldset',
       '#title' => $this->t('Configurações do Boleto USP'),
@@ -163,6 +181,18 @@ class WebformElementBoletoUSP extends WebformElementBase {
     $form['boletousp']['boletousp_container'] = [
       '#type' => 'container',
     ];
+
+    // $paytype = [
+    //   'pix' => $this->t('Pix'),
+    //   'boleto' => $this->t('Boleto'),
+    // ];
+    //
+    // $form['boletousp'][]['pay_type'] = [
+    //   '#type'          => 'select',
+    //   '#title'         => $this->t('Pix or Boleto'),
+    //   '#options'       => $paytype,
+    //   '#required'      => TRUE,
+    // ];
 
     $form['boletousp']['boletousp_container']['boletousp_codigoFonteRecurso'] = [
       '#type'        => 'number',
