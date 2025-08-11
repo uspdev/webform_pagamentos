@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_help().
@@ -15,4 +16,135 @@ function webform_boleto_usp_help($route_name, RouteMatchInterface $route_match) 
     case 'help.page.webform_boleto_usp':
       return t('Permite o site gerar Boleto USP.');
   }
+
+};
+
+function webform_boleto_usp_form_webform_settings_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\webform\WebformInterface $webform */
+  $webform = $form_state->getFormObject()->getEntity();
+
+    $form['settings']['paytype'] = [
+      '#type'  => 'fieldset',
+      '#title' => t('paytype'),
+    ];
+
+
+    $form['settings']['paytype']['boletousp_paytype'] = [
+      '#type' => 'select',
+      '#title' => t('Pix or Boleto'),
+      '#options' => [
+        'pix' => t('Pix'),
+        'boleto' => t('Boleto'),
+      ],
+      '#required' => TRUE,
+    ];
+
+
+    $form['settings']['boletousp'] = [
+      '#type'  => 'fieldset',
+      '#title' => t('Configurações do Boleto USP'),
+    ];
+
+    $form['settings']['boletousp']['boletousp_container'] = [
+      '#type' => 'container',
+    ];
+
+    // $paytype = [
+    //   'pix' => t('Pix'),
+    //   'boleto' => t('Boleto'),
+    // ];
+    //
+    // $form['settings']['boletousp'][]['pay_type'] = [
+    //   '#type'          => 'select',
+    //   '#title'         => t('Pix or Boleto'),
+    //   '#options'       => $paytype,
+    //   '#required'      => TRUE,
+    // ];
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_codigoFonteRecurso'] = [
+      '#type'        => 'number',
+      '#title'       => t('Código da Fonte de Recurso'),
+      '#required'    => TRUE,
+    ];
+
+    /* Preparando centros de despesas*/
+    $config = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+    $temp = explode("\n",$config->get('estruturaHierarquica'));
+    $centros = [];
+    foreach($temp as $i){
+        $centros[trim($i)] = trim($i);
+    }
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_estruturaHierarquica'] = [
+      '#type'     => 'select',
+      '#title'    => t('Centro Gerencial'),
+      '#options'  => $centros,
+      '#required' => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_dataVencimentoBoleto'] = [
+      '#type'     => 'date',
+      '#title'    => t('Data de Vencimento'),
+      '#required' => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_informacoesBoletoSacado'] = [
+      '#type'       => 'textfield',
+      '#attributes' => ['size' => 125],
+      '#title'      => t('Informações do Sacado'),
+      '#required'   => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_instrucoesObjetoCobranca'] = [
+      '#type'       => 'textfield',
+      '#attributes' => ['size' => 125],
+      '#title'      => t('Instruções do Objeto de Cobrança'),
+      '#required'   => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['boletousp_valorDocumento'] = [
+      '#type'        => 'textfield',
+      '#description' => t("Valor em reais (Ex.: 10,50)"),
+      '#title'       => t('Valor'),
+      //'#prefix'    => 'R$',
+      '#required'    => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['mapeamento'] = [
+      '#type'        => 'fieldset',
+      '#description' => t(""),
+      '#title'       => t('Mapeamento com campos do formuláriooo'),
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['mapeamento']['boletousp_codigoEmail'] = [
+      '#type'        => 'textfield',
+      '#description' => t("Chave para o campo do E-mail"),
+      '#attributes'  => ['size' => 25],
+      '#title'       => t('Chave para o campo do E-mail'),
+      '#required'    => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['mapeamento']['boletousp_nomeSacado'] = [
+      '#type'        => 'textfield',
+      '#description' => t("Chave para o campo do Nome do sacado"),
+      '#attributes'  => ['size' => 25],
+      '#title'       => t('Chave para o campo do Nome do sacado'),
+      '#required'    => TRUE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['mapeamento']['boletousp_cpfCnpj'] = [
+      '#type'        => 'textfield',
+      '#description' => t("Chave para o campo do CPF"),
+      '#attributes'  => ['size' => 25],
+      '#title'       => t('Chave para o campo do CPF'),
+      '#required'    => FALSE,
+    ];
+
+    $form['settings']['boletousp']['boletousp_container']['mapeamento']['boletousp_numeroUspSacado'] = [
+      '#type'        => 'textfield',
+      '#description' => t("Chave para o campo do número USP do sacado"),
+      '#attributes'  => ['size' => 10],
+      '#title'       => t('Chave para o campo do número USP do sacado'),
+      '#required'    => FALSE,
+    ];
 }
