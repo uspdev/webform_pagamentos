@@ -37,7 +37,7 @@ class WebformBoletoUspForm extends ConfigFormBase {
       '#description'   => $this->t(''),
       '#open'          => TRUE,
     ];
-    $form['auth']['user_id'] = [
+     $form['auth']['user_id'] = [
       '#type'          => 'textfield',
       '#title'         => $this->t('Usuário'),
       '#size'          => 15,

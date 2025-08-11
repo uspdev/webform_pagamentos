@@ -22,9 +22,10 @@ class BoletoController extends ControllerBase {
       /* Verificamos se há boleto gerado para esse webform_submission */
       $data = $webform_submission->getData();
       if(isset($data['boleto_status'])){
-        
+
         if($data['boleto_status'] == true) {
             $config   = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+            $pay_type = $config->get('pay_type');
             $boleto   = new Boleto($config->get('user_id'),$config->get('token'));
             $obter    = $boleto->obter($data['boleto_id']);
             $response = new Response();
@@ -42,7 +43,10 @@ class BoletoController extends ControllerBase {
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t("Não foi possível gerar o boleto: {$msg}"),
+      '#markup' => $this->t("Não foi possível gerar o boleto: @msg <br> Tipo de pagamento configurado: @pay_type", [
+        '@msg' => $msg,
+        '@pay_type' => $pay_type ?? 'não definido',
+      ]),
     ];
   }
 
