@@ -5,6 +5,8 @@
  * Módulo para Pagamentos USP
  */
 
+
+use Uspdev\Senhaunica\Senhaunica;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -22,13 +24,25 @@ function webform_boleto_usp_help($route_name, RouteMatchInterface $route_match) 
 function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'webform_settings_form') {
 
+
+    $form['third_party_settings']['habilitar_pagamento'] = [
+      '#type' => 'checkbox',
+      '#title' => t('habilitar pagamento'),
+    ];
+
+
     $form['third_party_settings']['webform_boleto_usp'] = [
+      '#states' => [
+        'invisible' => [
+          ':input[name="third_party_settings[habilitar_pagamento]"]' => ['checked' => FALSE],
+        ],
+      ],
       '#type' => 'fieldset',
       '#title' => t('Pagamentos USP'),
       '#tree' => TRUE,
-      '#weight' => 20, 
+      '#weight' => 20,
     ];
-    
+
     $form['third_party_settings']['webform_boleto_usp']['tipo_pagamento'] = [
       '#type'          => 'select',
       '#title'         => t('Tipos'),
@@ -60,7 +74,7 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#options'       => $centros,
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica'),
       '#required'      => TRUE,
-    ];  
+    ];
 
     $form['third_party_settings']['webform_boleto_usp']['dataVencimento'] = [
       '#type'          => 'date',
@@ -92,7 +106,7 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'valorDocumento'),
       '#required'      => TRUE,
     ];
-    
+
     $form['third_party_settings']['webform_boleto_usp']['nomeSacado'] = [
       '#type'          => 'textfield',
       '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
@@ -143,9 +157,9 @@ function webform_boleto_usp_webform_settings_submit(array $form, FormStateInterf
   $webform->setThirdPartySetting('webform_boleto_usp', 'codigoFonteRecurso', $settings['codigoFonteRecurso']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica', $settings['estruturaHierarquica']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'dataVencimento', $settings['dataVencimento']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'informacoesSacado', $settings['informacoesSacado']);  
+  $webform->setThirdPartySetting('webform_boleto_usp', 'informacoesSacado', $settings['informacoesSacado']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'instrucoesObjetoCobranca', $settings['instrucoesObjetoCobranca']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'valorDocumento', $settings['valorDocumento']);  
+  $webform->setThirdPartySetting('webform_boleto_usp', 'valorDocumento', $settings['valorDocumento']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'nomeSacado', $settings['nomeSacado']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'codigoEmail', $settings['codigoEmail']);
   $webform->setThirdPartySetting('webform_boleto_usp', 'cpfCnpj', $settings['cpfCnpj']);
