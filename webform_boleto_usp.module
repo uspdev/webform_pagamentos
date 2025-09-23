@@ -19,16 +19,21 @@ function webform_boleto_usp_help($route_name, RouteMatchInterface $route_match) 
   }
 }
 
-function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'webform_settings_form') {
 
+function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state) {
     $form['third_party_settings']['webform_boleto_usp'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Pagamentos USP'),
-      '#tree' => TRUE,
-      '#weight' => 20, 
+      '#type' => 'details',
+      '#title' => t('PAGAMENTOS - USP'),
+      '#open' => FALSE,
     ];
-    
+
+    $form['third_party_settings']['webform_boleto_usp']['habilitar_pagamento'] = [
+      '#type' => 'checkbox',
+      '#title' => t('habilitar pagamento'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'habilitar_pagamento', FALSE),
+
+    ];
+
     $form['third_party_settings']['webform_boleto_usp']['tipo_pagamento'] = [
       '#type'          => 'select',
       '#title'         => t('Tipos'),
@@ -37,7 +42,14 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
         'boleto'       => t('Boleto'),
       ],
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'tipo_pagamento'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
       ];
 
      $form['third_party_settings']['webform_boleto_usp']['codigoFonteRecurso'] = [
@@ -45,6 +57,11 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#title'         => t('Código da Fonte de Recurso'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'codigoFonteRecurso'),
       '#required'      => FALSE,
+      '#states' => [
+        'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+        ],
     ];
 
     $config  = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
@@ -59,14 +76,28 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#title'         => t('Centro Gerencial'),
       '#options'       => $centros,
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica'),
-      '#required'      => TRUE,
-    ];  
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
+    ];
 
     $form['third_party_settings']['webform_boleto_usp']['dataVencimento'] = [
       '#type'          => 'date',
       '#title'         => t('Data de Vencimento'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'dataVencimento'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['informacoesSacado'] = [
@@ -74,7 +105,14 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#attributes'    => ['size' => 125],
       '#title'         => t('Informações do Sacado'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'informacoesSacado'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['instrucoesObjetoCobranca'] = [
@@ -82,7 +120,14 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#attributes'    => ['size' => 125],
       '#title'         => t('Instruções do Objeto de Cobrança'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'instrucoesObjetoCobranca'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['valorDocumento'] = [
@@ -90,16 +135,30 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#description'   => t("Valor em Reais (Ex.: 10,50)"),
       '#title'         => t('Valor'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'valorDocumento'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
-    
+
     $form['third_party_settings']['webform_boleto_usp']['nomeSacado'] = [
       '#type'          => 'textfield',
       '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
       '#attributes'    => ['size' => 25],
       '#title'         => t('Chave para o campo do Nome'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'nomeSacado'),
-      '#required'      => TRUE,
+      '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['codigoEmail'] = [
@@ -108,7 +167,14 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#attributes'    => ['size' => 25],
       '#title'         => t('Chave para o campo do E-mail'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'codigoEmail'),
-      '#required'      => TRUE,
+            '#states' => [
+              'required' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+              'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+            ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['cpfCnpj'] = [
@@ -118,6 +184,11 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#title'         => t('Chave para o campo do CPF'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'cpfCnpj'),
       '#required'      => FALSE,
+      '#states' => [
+        'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+        ],
     ];
 
     $form['third_party_settings']['webform_boleto_usp']['numeroUspSacado'] = [
@@ -127,29 +198,15 @@ function webform_boleto_usp_form_alter(&$form, FormStateInterface $form_state, $
       '#title'         => t('Chave para o campo do Número USP'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'numeroUspSacado'),
       '#required'      => FALSE,
-    ];
+      '#states' => [
+        'visible' => [
+                 ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
+              ],
+        ],
+
+      ];
 
     $form['#submit'][] = 'webform_boleto_usp_webform_settings_submit';
-  }
 
 }
 
-function webform_boleto_usp_webform_settings_submit(array $form, FormStateInterface $form_state) {
-
-  $webform  = $form_state->getFormObject()->getEntity();
-  $settings = $form_state->getValue(['third_party_settings', 'webform_boleto_usp']);
-
-  $webform->setThirdPartySetting('webform_boleto_usp', 'tipo_pagamento', $settings['tipo_pagamento']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'codigoFonteRecurso', $settings['codigoFonteRecurso']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica', $settings['estruturaHierarquica']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'dataVencimento', $settings['dataVencimento']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'informacoesSacado', $settings['informacoesSacado']);  
-  $webform->setThirdPartySetting('webform_boleto_usp', 'instrucoesObjetoCobranca', $settings['instrucoesObjetoCobranca']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'valorDocumento', $settings['valorDocumento']);  
-  $webform->setThirdPartySetting('webform_boleto_usp', 'nomeSacado', $settings['nomeSacado']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'codigoEmail', $settings['codigoEmail']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'cpfCnpj', $settings['cpfCnpj']);
-  $webform->setThirdPartySetting('webform_boleto_usp', 'numeroUspSacado', $settings['numeroUspSacado']);
-
-  $webform->save();
-}
