@@ -19,11 +19,10 @@ function webform_boleto_usp_help($route_name, RouteMatchInterface $route_match) 
   }
 }
 
-
 function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state) {
     $form['third_party_settings']['webform_boleto_usp'] = [
       '#type' => 'details',
-      '#title' => t('PAGAMENTOS - USP'),
+      '#title' => t('Universidade de São Paulo - Pagamentos'),
       '#open' => FALSE,
     ];
 
