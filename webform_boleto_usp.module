@@ -36,6 +36,7 @@ function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form
     $form['third_party_settings']['webform_boleto_usp']['tipo_pagamento'] = [
       '#type'          => 'select',
       '#title'         => t('Tipos'),
+      '#empty_option' => t(' -- Selecione o Método de Pagamento-- '),
       '#options'       => [
         'pix'          => t('Pix'),
         'boleto'       => t('Boleto'),
@@ -73,6 +74,7 @@ function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form
     $form['third_party_settings']['webform_boleto_usp']['estruturaHierarquica'] = [
       '#type'          => 'select',
       '#title'         => t('Centro Gerencial'),
+      '#empty_option' => t(' -- Selecione o Centro Gerencial-- '),
       '#options'       => $centros,
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica'),
       '#states' => [
