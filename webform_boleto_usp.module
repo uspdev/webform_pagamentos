@@ -28,7 +28,7 @@ function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form
 
     $form['third_party_settings']['webform_boleto_usp']['habilitar_pagamento'] = [
       '#type' => 'checkbox',
-      '#title' => t('habilitar pagamento'),
+      '#title' => t('Habilitar Pagamento'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'habilitar_pagamento', FALSE),
 
     ];
@@ -64,19 +64,12 @@ function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form
         ],
     ];
 
-    $config  = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
-    $temp    = explode("\n",$config->get('estruturaHierarquica'));
-    $centros = [];
-    foreach($temp as $i){
-      $centros[trim($i)] = trim($i);
-    }
 
     $form['third_party_settings']['webform_boleto_usp']['estruturaHierarquica'] = [
-      '#type'          => 'select',
+      '#type'          => 'textfield',
       '#title'         => t('Centro Gerencial'),
-      '#empty_option' => t(' -- Selecione o Centro Gerencial-- '),
-      '#options'       => $centros,
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_boleto_usp', 'estruturaHierarquica'),
+      '#placeholder' => t('Ex.:  \FFLCH\SCINFOR'), // This is the detail text
       '#states' => [
               'required' => [
                  ':input[name="third_party_settings[webform_boleto_usp][habilitar_pagamento]"]' => ['checked' => TRUE],
@@ -211,3 +204,86 @@ function webform_boleto_usp_webform_third_party_settings_form_alter(array &$form
 
 }
 
+//==================================================
+
+function webform_boleto_usp_entity_presave(EntityInterface $entity) {
+    if (!$entity instanceof WebformInterface) {
+        return;
+    }
+
+    $enabled = (bool) $entity->getThirdPartySetting('webform_boleto_usp', 'habilitar_pagamento', FALSE);
+
+  // Verifica qual o tipo de pagamento selecionado.
+  $payment_type = $entity->getThirdPartySetting('webform_boleto_usp', 'tipo_pagamento', '');
+
+  // Definição dos campos para PIX.
+  $pixvalue = [
+    'idfpix' => 'PIX ID',
+  ];
+
+  $boletovalue = [
+    'codigoIDBoleto' => 'BOLETO ID',
+  ];
+
+  if ($enabled && $payment_type === 'pix') {
+    // Cria campo oculto para PIX
+    foreach ($pixvalue as $key => $title) {
+      $entity->setElementProperties($key, [
+        '#type'    => 'hidden',
+        '#title'   => $title,
+        '#private' => TRUE,
+      ]);
+    }
+    // Remove campos de boleto se existirem
+    foreach (array_keys($boletovalue) as $key) {
+      $entity->deleteElement($key);
+    }
+  }
+  elseif ($enabled && $payment_type === 'boleto') {
+    // Cria campo oculto para Boleto
+    foreach ($boletovalue as $key => $title) {
+      $entity->setElementProperties($key, [
+        '#type'    => 'hidden',
+        '#title'   => $title,
+        '#private' => TRUE,
+      ]);
+    }
+    // Remove campos de PIX se existirem
+    foreach (array_keys($pixvalue) as $key) {
+      $entity->deleteElement($key);
+    }
+  }
+  else {
+    // Se não habilitado ou nenhum tipo selecionado, remove ambos
+    foreach (array_keys($pixvalue) as $key) {
+      $entity->deleteElement($key);
+    }
+    foreach (array_keys($boletovalue) as $key) {
+      $entity->deleteElement($key);
+    }
+  }
+}
+
+
+
+
+ // public function gera($webform_submission_id) {
+ //    $webform_submission = WebformSubmission::load($webform_submission_id);
+ //
+ //    $msg = '';
+ //
+ //    if($webform_submission) {
+ //
+ //      /* Verificamos se há boleto gerado para esse webform_submission */
+ //      $data = $webform_submission->getData();
+ //      if(isset($data['boleto_status'])){
+ //
+ //        if($data['boleto_status'] == true) {
+ //            $config   = \Drupal::service('config.factory')->getEditable('webform_boleto_usp.settings');
+ //            $pay_type = $config->get('pay_type');
+ //            $boleto   = new Boleto($config->get('user_id'),$config->get('token'));
+ //            $obter    = $boleto->obter($data['boleto_id']);
+ //            $response = new Response();
+ //            $response->headers->set('Content-Type', 'application/pdf');
+ //            $response->setContent(base64_decode($obter['value']));
+ //            return $response;
