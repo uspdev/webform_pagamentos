@@ -1,0 +1,8 @@
+name: Webform Pagamentos
+description: 'Gera boleto ou PIX USP'
+type: module
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+dependencies:
+  - webform
+configure: webform_pagamentos.settings
+package: Universidade de São Paulo
