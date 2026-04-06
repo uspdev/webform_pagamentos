@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\WebformInterface;
+use Drupal\webform\WebformSubmissionInterface;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+function webform_pagamentos_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state) {
+    $webform = $form_state->getFormObject()->getEntity();
+
+    $form['third_party_settings']['webform_pagamentos'] = [
+        '#type' => 'details',
+        '#title' => t('Universidade de São Paulo - Pagamentos'),
+        '#open' => FALSE,
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['habilitar_boleto'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Habilitar Boleto'),
+        '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'habilitar_boleto', FALSE),
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['habilitar_pix'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Habilitar Pix'),
+        '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'habilitar_pix', FALSE),
+    ];
+
+}
