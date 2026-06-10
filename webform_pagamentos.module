@@ -204,4 +204,17 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
     ];
 }
 
+function webform_pagamentos_webform_submission_insert(WebformSubmissionInterface $webform_submission) {
+  $settings = $webform_submission
+    ->getWebform()
+    ->getThirdPartySettings('webform_pagamentos');
 
+  if (empty($settings['habilitar_boleto'])) {
+      return;
+    }
+
+  $submission_data = $webform_submission->getData();
+
+    \Drupal::service('webform_pagamentos.gerar_boleto')
+    ->generate($settings, $webform_submission->getData());
+}
