@@ -22,10 +22,186 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
         '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'habilitar_boleto', FALSE),
     ];
 
+    $form['third_party_settings']['webform_pagamentos']['boleto_habilitado'] = [
+        '#type' => 'details',
+        '#title' => t('Informações de Boleto'),
+        '#open' => FALSE,
+        '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+      $form['third_party_settings']['webform_pagamentos']['codigoFonteRecurso'] = [
+      '#type'          => 'number',
+      '#title'         => t('Código da Fonte de Recurso'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'codigoFonteRecurso'),
+      '#required'      => FALSE,
+        '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+
+    $form['third_party_settings']['webform_pagamentos']['estruturaHierarquica'] = [
+      '#type'          => 'textfield',
+      '#title'         => t('Centro Gerencial'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'estruturaHierarquica'),
+      '#placeholder' => t('Ex.:  \FFLCH\SCINFOR'), // This is the detail text
+      '#description'   => t("Ex.:  \FFLCH\SCINFOR"),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['dataVencimento'] = [
+      '#type'          => 'date',
+      '#title'         => t('Data de Vencimento'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'dataVencimento'),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['informacoesSacado'] = [
+      '#type'          => 'textfield',
+      '#attributes'    => ['size' => 125],
+      '#title'         => t('Informações do Sacado'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'informacoesSacado'),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['instrucoesObjetoCobranca'] = [
+      '#type'          => 'textfield',
+      '#attributes'    => ['size' => 125],
+      '#title'         => t('Instruções do Objeto de Cobrança'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'instrucoesObjetoCobranca'),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['valorDocumento'] = [
+      '#type'          => 'textfield',
+      '#description'   => t("Valor em Reais (Ex.: 10,50)"),
+      '#title'         => t('Valor'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'valorDocumento'),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['nomeSacado'] = [
+      '#type'          => 'textfield',
+      '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
+      '#attributes'    => ['size' => 25],
+      '#title'         => t('Chave para o campo do Nome'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'nomeSacado'),
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['codigoEmail'] = [
+      '#type'          => 'textfield',
+      '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
+      '#attributes'    => ['size' => 25],
+      '#title'         => t('Chave para o campo do E-mail'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'codigoEmail'),
+            '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['cpfCnpj'] = [
+      '#type'          => 'textfield',
+      '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
+      '#attributes'    => ['size' => 25],
+      '#title'         => t('Chave para o campo do CPF'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'cpfCnpj'),
+      '#required'      => FALSE,
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+    ];
+
+    $form['third_party_settings']['webform_pagamentos']['numeroUspSacado'] = [
+      '#type'          => 'textfield',
+      '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
+      '#attributes'    => ['size' => 25],
+      '#title'         => t('Chave para o campo do Número USP'),
+      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'numeroUspSacado'),
+      '#required'      => FALSE,
+      '#states' => [
+                  'required' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                  'visible' => [
+                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+                  ],
+                ],
+
+      ];
+
+    $form['#submit'][] = 'webform_pagamentos_webform_settings_submit';
+
+
     $form['third_party_settings']['webform_pagamentos']['habilitar_pix'] = [
         '#type' => 'checkbox',
         '#title' => t('Habilitar Pix'),
         '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'habilitar_pix', FALSE),
     ];
-
 }
+
+
