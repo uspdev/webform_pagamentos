@@ -1,0 +1,3 @@
+services:
+  webform_pagamentos.gerar_boleto:
+    class: Drupal\webform_pagamentos\Service\GerarBoleto
