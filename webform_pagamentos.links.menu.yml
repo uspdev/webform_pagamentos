@@ -1,0 +1,5 @@
+webform_pagamentos.settings:
+  title: 'Webform Pagamentos'
+  description: 'Configurações de autenticação do boleto USP'
+  parent: system.admin_config_services
+  route_name: webform_pagamentos.settings

@@ -1,0 +1,7 @@
+webform_pagamentos.settings:
+  path: '/admin/config/webform-pagamentos/settings'
+  defaults:
+    _form: '\Drupal\webform_pagamentos\Form\SettingsForm'
+    _title: 'Webform Pagamentos'
+  requirements:
+    _permission: 'administer site configuration'

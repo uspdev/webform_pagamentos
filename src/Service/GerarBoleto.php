@@ -19,6 +19,9 @@ public function generate(array $settings, array $submission_data): array {
     $cpfCnpjSET = $settings['cpfCnpj'] ?? '';
     $numeroUspSacadoSET = $settings['numeroUspSacado'] ?? '';
 
+
+    //GUARDANDO PARA CASO PRECISE ADICIONAR INFORMAÇÕES COLOCADAS PELO USUÁRIO:
+
     // $codigoFonteRecurso = $submission_data[$codigoFonteRecursoSET] ?? '';
     // $estruturaHierarquica = $submission_data[$estruturaHierarquicaSET] ?? '';
     // $dataVencimento = $submission_data[$dataVencimentoSET] ?? '';
@@ -30,7 +33,18 @@ public function generate(array $settings, array $submission_data): array {
     // $cpfCnpj = $submission_data[$cpfCnpjSET] ?? '';
     // $numeroUspSacado = $submission_data[$numeroUspSacadoSET] ?? '';
 
-    $boleto = new Boleto('user','senha');
+    ///
+    ///Recupera USER E LOGIN a partir do Settings no menuzinho lá de configuração do Drupal ;)
+
+    $config = \Drupal::config('webform_pagamentos.settings');
+    $user = $config->get('user');
+    $password = $config->get('password');
+
+    ///
+    ///
+
+
+    $boleto = new Boleto($user, $password);
     /* array com campos mínimos para geração do boleto */
     $data = array(
         'codigoUnidadeDespesa' => 8,
