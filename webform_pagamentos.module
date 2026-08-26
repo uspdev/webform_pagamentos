@@ -22,21 +22,7 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
         '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'habilitar_boleto', FALSE),
     ];
 
-    $form['third_party_settings']['webform_pagamentos']['boleto_habilitado'] = [
-        '#type' => 'details',
-        '#title' => t('Informações de Boleto'),
-        '#open' => FALSE,
-        '#states' => [
-                  'required' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
-                  'visible' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
-                ],
-    ];
-
-      $form['third_party_settings']['webform_pagamentos']['codigoFonteRecurso'] = [
+    $form['third_party_settings']['webform_pagamentos']['codigoFonteRecurso'] = [
       '#type'          => 'number',
       '#title'         => t('Código da Fonte de Recurso'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'codigoFonteRecurso'),
@@ -50,7 +36,6 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
                   ],
                 ],
     ];
-
 
     $form['third_party_settings']['webform_pagamentos']['estruturaHierarquica'] = [
       '#type'          => 'textfield',
@@ -184,9 +169,6 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'numeroUspSacado'),
       '#required'      => FALSE,
       '#states' => [
-                  'required' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
                   'visible' => [
                     ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
                   ],
@@ -211,7 +193,7 @@ function webform_pagamentos_webform_submission_insert(WebformSubmissionInterface
 
   if (empty($settings['habilitar_boleto'])) {
       return;
-    }
+  }
 
   $submission_data = $webform_submission->getData();
 
