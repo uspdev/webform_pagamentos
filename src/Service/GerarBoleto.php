@@ -48,6 +48,7 @@ class GerarBoleto {
 
 
         $gerar = $boleto->gerar($data);
+        dd($gerar);
 
         if ($gerar['status'] == false) {
             \Drupal::messenger()->addError(t('Não foi possível gerar o boleto: @erro', [
@@ -59,7 +60,7 @@ class GerarBoleto {
             $id = $gerar['value'];
             $obter = $boleto->obter($id);
 
-            // Isaac: guardar o código do boleto id hash, submission_id, e a mensagem de erro quando for erro 
+            // Isaac: guardar o código do boleto id hash, submission_id, e a mensagem de erro quando for erro
 
             header('Content-type: application/pdf');
             header('Content-Disposition: attachment; filename="boleto.pdf"');
