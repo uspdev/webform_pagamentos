@@ -8,6 +8,21 @@ use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 function webform_pagamentos_webform_third_party_settings_form_alter(array &$form, FormStateInterface $form_state) {
+
+  // 1. Retrieve the webform entity from form state
+/** @var \Drupal\webform\WebformInterface $webform */
+$webform = $form_state->getFormObject()->getEntity();
+
+// 2. Build the select options array from the webform's elements
+$options = ['' => t('- Selecione um campo -')];
+$elements = $webform->getElementsInitializedAndFlattened();
+
+foreach ($elements as $key => $element) {
+  $title = !empty($element['#title']) ? $element['#title'] : $key;
+  $options[$key] = "$title ($key)";
+}
+
+
     $webform = $form_state->getFormObject()->getEntity();
 
     $form['third_party_settings']['webform_pagamentos'] = [
@@ -113,9 +128,9 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
     ];
 
     $form['third_party_settings']['webform_pagamentos']['nomeSacado'] = [
-      '#type'          => 'textfield',
+      '#type'          => 'select',
+      '#options'       => $options,
       '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
-      '#attributes'    => ['size' => 25],
       '#title'         => t('Chave para o campo do Nome'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'nomeSacado'),
       '#states' => [
@@ -129,9 +144,9 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
     ];
 
     $form['third_party_settings']['webform_pagamentos']['codigoEmail'] = [
-      '#type'          => 'textfield',
+      '#type'          => 'select',
+      '#options'       => $options,
       '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
-      '#attributes'    => ['size' => 25],
       '#title'         => t('Chave para o campo do E-mail'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'codigoEmail'),
             '#states' => [
@@ -145,35 +160,32 @@ function webform_pagamentos_webform_third_party_settings_form_alter(array &$form
     ];
 
     $form['third_party_settings']['webform_pagamentos']['cpfCnpj'] = [
-      '#type'          => 'textfield',
+      '#type'          => 'select',
+      '#options'       => $options,
       '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
-      '#attributes'    => ['size' => 25],
       '#title'         => t('Chave para o campo do CPF'),
       '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'cpfCnpj'),
-      '#required'      => FALSE,
-      '#states' => [
-                  'required' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
-                  'visible' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
-                ],
-    ];
+        '#required'      => FALSE,
+        '#states'        => [
+          'visible' => [
+            ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+          ],
+        ],
+      ];
 
-    $form['third_party_settings']['webform_pagamentos']['numeroUspSacado'] = [
-      '#type'          => 'textfield',
-      '#description'   => t("Altere para o valor segundo a configuração do campo no formulário."),
-      '#attributes'    => ['size' => 25],
-      '#title'         => t('Chave para o campo do Número USP'),
-      '#default_value' => $form_state->getFormObject()->getEntity()->getThirdPartySetting('webform_pagamentos', 'numeroUspSacado'),
-      '#required'      => FALSE,
-      '#states' => [
-                  'visible' => [
-                    ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
-                  ],
-                ],
 
+      $form['third_party_settings']['webform_pagamentos']['numeroUspSacado'] = [
+        '#type'          => 'select',
+        '#options'       => $options,
+        '#description'   => t("Selecione o Campo Definido."),
+        '#title'         => t('Chave para o campo do Número USP'),
+        '#default_value' => $webform->getThirdPartySetting('webform_pagamentos', 'numeroUspSacado'),
+        '#required'      => FALSE,
+        '#states'        => [
+          'visible' => [
+            ':input[name="third_party_settings[webform_pagamentos][habilitar_boleto]"]' => ['checked' => TRUE],
+          ],
+        ],
       ];
 
     $form['#submit'][] = 'webform_pagamentos_webform_settings_submit';
